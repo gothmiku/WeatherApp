@@ -14,15 +14,11 @@ android {
     defaultConfig {
         val localProperties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) {
-            localProperties.load(FileInputStream(localPropertiesFile))
-        }
+        localProperties.load(FileInputStream(localPropertiesFile))
 
-        val apiKey = localProperties.getProperty("API_KEY")
-            ?: findProperty("API_KEY") as String?
-            ?: "default_value"
+        buildConfigField("String", "API_KEY", localProperties.getProperty("API_KEY"))
 
-        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+
         android.buildFeatures.buildConfig = true
         //val apiKeyValue = findProperty("API_KEY") as String? ?: "default_value"
         //buildConfigField("String", "API_KEY", "\"$apiKeyValue\"")
@@ -63,6 +59,7 @@ dependencies {
     implementation(libs.androidx.room.compiler){
         exclude(group = "com.intellij", module = "annotations")
     }
+    implementation(libs.androidx.fragment)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

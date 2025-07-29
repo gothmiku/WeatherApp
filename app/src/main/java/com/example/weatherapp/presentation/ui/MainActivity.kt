@@ -1,4 +1,4 @@
-package com.example.weatherapp
+package com.example.weatherapp.presentation.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.weatherapp.GPS.GPSController
-import com.example.weatherapp.BuildConfig;
+import com.example.weatherapp.BuildConfig
+import com.example.weatherapp.R
+import com.example.weatherapp.data.remote.GPSController
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
             Log.d("API","API KEY IS $apiKey")
             Log.d("API_KEY", "API Key value: ${BuildConfig.API_KEY}")
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+
+
+
             insets
         }
     }

@@ -1,10 +1,9 @@
-package com.example.weatherapp.GPS
+package com.example.weatherapp.data.remote
 
 import android.Manifest
 import android.content.Context
 import android.util.Log
 import androidx.annotation.RequiresPermission
-import com.example.weatherapp.MainActivity
 import com.google.android.gms.location.LocationServices
 
 class GPSController(context : Context) {
