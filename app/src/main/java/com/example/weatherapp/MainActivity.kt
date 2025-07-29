@@ -3,12 +3,14 @@ package com.example.weatherapp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.weatherapp.GPS.GPSController
+import com.example.weatherapp.BuildConfig;
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,9 @@ class MainActivity : AppCompatActivity() {
             val gpsController = GPSController(this)
             gpsController.getLastLocation()
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val apiKey = BuildConfig.API_KEY;
+            Log.d("API","API KEY IS $apiKey")
+            Log.d("API_KEY", "API Key value: ${BuildConfig.API_KEY}")
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
