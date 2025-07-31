@@ -59,5 +59,5 @@ import java.time.LocalDateTime
 
 @Database(entities = [WeatherInfo::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun weatherInfoDAO(): WeatherInfoDAO
+    abstract fun weatherDAO(): WeatherInfoDAO
 }
