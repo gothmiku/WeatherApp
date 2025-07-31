@@ -20,14 +20,14 @@ import javax.inject.Singleton
 object WeatherAppModule {
     @Singleton
     @Provides
-    fun provideWeatherRepo(weatherInfoDAO: WeatherInfoDAO) : WeatherRepo {
-        return WeatherRepo(weatherInfoDAO)
+    fun provideWeatherRepo(weatherDAO: WeatherInfoDAO) : WeatherRepo {
+        return WeatherRepo(weatherDAO)
     }
 
     @Singleton
     @Provides
     fun provideWeatherInfoDAO(appDatabase: AppDatabase) : WeatherInfoDAO {
-        return appDatabase.weatherInfoDAO()
+        return appDatabase.weatherDAO()
     }
 
     @Singleton

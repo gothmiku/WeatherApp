@@ -34,7 +34,7 @@ interface WeatherInfoDAO{
     @Query("SELECT * FROM WeatherInfo ORDER BY date ASC LIMIT 1")
     fun getOldestWeatherInfo(): WeatherInfo?
 
-    @Query("DELETE FROM WeatherInfo ORDER BY date ASC LIMIT 1")
+    @Query("DELETE FROM WeatherInfo WHERE date = (SELECT date FROM WeatherInfo ORDER BY date ASC LIMIT 1)")
     fun deleteOldestWeatherInfo()
 
     @Query("DELETE FROM WeatherInfo")
