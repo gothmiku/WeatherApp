@@ -9,14 +9,10 @@ import javax.inject.Singleton
 @Singleton
 class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO) {
 
-
-
-    val weatherInfo = dao.getLatestWeatherInfo()
-
+    // Remove this line - it's causing the crash
+    // val weatherInfo = dao.getLatestWeatherInfo()
 
     val allWeatherInfos: Flow<List<WeatherInfo>> = dao.getAllWeatherInfoFlow()
-
-
 
     suspend fun insertWeatherInfo(weatherInfo : WeatherInfo) {
         dao.insertWeatherInfo(weatherInfo)
@@ -37,6 +33,4 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO) {
     suspend fun deleteAllWeatherInfo(){
         dao.deleteAllWeatherInfo()
     }
-
-
 }

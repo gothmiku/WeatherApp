@@ -7,11 +7,10 @@ import androidx.room.Dao
 import kotlinx.coroutines.flow.Flow
 import com.example.weatherapp.data.model.WeatherInfo
 
-
 @Dao
 interface WeatherInfoDAO{
     @Insert
-    fun insertWeatherInfo(weatherInfo: WeatherInfo)
+    suspend fun insertWeatherInfo(weatherInfo: WeatherInfo)
 
     @Query("SELECT * FROM WeatherInfo WHERE date = :date")
     fun getWeatherInfoByDate(date: String): WeatherInfo?
@@ -40,12 +39,9 @@ interface WeatherInfoDAO{
     @Query("DELETE FROM WeatherInfo")
     fun deleteAll()
 
-    @Query("SELECT *,COUNT(*) FROM WeatherInfo")
+    @Query("SELECT COUNT(*) FROM WeatherInfo")
     fun countRows(): Int
 
     @Delete(entity = WeatherInfo::class)
     fun delete(weatherInfo: WeatherInfo)
-
-
-
 }
