@@ -9,17 +9,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.BuildConfig
 import com.example.weatherapp.R
+import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.remote.GPSController
 import com.example.weatherapp.data.repo.WeatherRepo
+import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory
+import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-
+    private lateinit var weatherViewModel : WeatherAppViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +43,12 @@ class MainActivity : AppCompatActivity() {
             Log.d("API","API KEY IS $apiKey")
             Log.d("API_KEY", "API Key value: ${BuildConfig.API_KEY}")
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-
-
+            weatherViewModel = ViewModelProvider(this)[WeatherAppViewModel::class.java]
+            weatherViewModel.insertWeatherInfo(WeatherInfo(date = LocalDate.now().toString()
+                ,temperature="100"
+                , humidity = "30"
+            , windSpeed = "10"
+            , pressure = "10"))
 
             insets
         }
