@@ -8,11 +8,15 @@ I am considering to put date as the primary key and reset the database once in a
 This will be mostly about caching
  */
 
-@Entity
+@Entity(tableName = "WeatherInfo")
 data class WeatherInfo(
     @PrimaryKey val date: String,
-    val temperature: String,
-    val humidity: String,
-    val windSpeed: String,
-    val pressure: String
+    val temp: Float,
+    val feels_like: Float,
+    val humidity: Int,
+    val wind_speed: Float,
+    val pressure: Int,
+    val clouds : Int,
+    val uvi : Float,
+    val visibility : Int,
 )

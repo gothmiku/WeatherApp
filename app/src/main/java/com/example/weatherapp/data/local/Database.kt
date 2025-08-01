@@ -15,6 +15,23 @@ import java.time.LocalDateTime
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherDAO(): WeatherInfoDAO
 
+    private class WeatherDatabaseCallback(
+        private val scope: CoroutineScope
+    ) : RoomDatabase.Callback() {
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            // This runs when database is created for the first time
+            android.util.Log.d("Database", "Database created for the first time")
+        }
+
+        override fun onOpen(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            // This runs every time database is opened
+            android.util.Log.d("Database", "Database opened")
+        }
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -25,8 +42,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "weather_dbcache"
-                ).allowMainThreadQueries() // Add this temporarily to fix the crash
-                    .build()
+                ).build()
                 INSTANCE = instance
                 instance
             }

@@ -22,4 +22,24 @@ class WeatherAppViewModel @Inject constructor (private val repo : WeatherRepo) :
         }
     }
 
+    suspend fun getAllWeatherInfo(): List<WeatherInfo> {
+        return repo.getAllWeatherInfo()
+    }
+
+    suspend fun getLatestWeatherInfo(): WeatherInfo? {
+        return repo.getLatestWeatherInfo()
+    }
+
+    suspend fun deleteAllWeatherInfo() {
+        repo.deleteAllWeatherInfo()
+    }
+
+    suspend fun getWeatherInfoCount(): Int {
+        return repo.getWeatherInfoCount()
+    }
+
+    suspend fun update(weatherInfo: WeatherInfo){
+        repo.update(weatherInfo)
+    }
+
 }

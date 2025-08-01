@@ -4,6 +4,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Dao
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import com.example.weatherapp.data.model.WeatherInfo
 
@@ -44,4 +45,9 @@ interface WeatherInfoDAO{
 
     @Delete(entity = WeatherInfo::class)
     fun delete(weatherInfo: WeatherInfo)
+
+    @Update(entity = WeatherInfo::class)
+    fun update(weatherInfo: WeatherInfo)
+
+
 }
