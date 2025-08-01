@@ -1,39 +1,49 @@
 package com.example.weatherapp.data.repo
 
-import com.example.weatherapp.data.local.AppDatabase
-import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.local.WeatherInfoDAO
-import jakarta.inject.Inject
-import jakarta.inject.Singleton
+import com.example.weatherapp.data.model.WeatherInfo
+import com.example.weatherapp.data.remote.WeatherAPI
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-@Singleton
-class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO) {
-    private val weatherInfoDAO: WeatherInfoDAO = dao
+class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private val api: WeatherAPI) {
 
-    val allWeatherInfos: Flow<List<WeatherInfo>> = weatherInfoDAO.getAllWeatherInfoFlow()
+    // Remove this line - it's causing the crash
+    // val weatherInfo = dao.getLatestWeatherInfo()
+
+    val allWeatherInfos: Flow<List<WeatherInfo>> = dao.getAllWeatherInfoFlow()
 
 
 
     suspend fun insertWeatherInfo(weatherInfo : WeatherInfo) {
-        weatherInfoDAO.insertWeatherInfo(weatherInfo)
+        dao.insertWeatherInfo(weatherInfo)
     }
 
     suspend fun getAllWeatherInfo(): List<WeatherInfo> {
-        return weatherInfoDAO.getAllWeatherInfo()
+        return dao.getAllWeatherInfo()
     }
 
     suspend fun getLatestWeatherInfo(): WeatherInfo? {
-        return weatherInfoDAO.getLatestWeatherInfo()
+        return dao.getLatestWeatherInfo()
     }
 
     suspend fun deleteOldestWeatherInfo(){
-        weatherInfoDAO.deleteOldestWeatherInfo()
+        dao.deleteOldestWeatherInfo()
     }
 
     suspend fun deleteAllWeatherInfo(){
-        weatherInfoDAO.deleteAllWeatherInfo()
+        dao.deleteAllWeatherInfo()
     }
 
+    suspend fun getWeatherInfoCount(): Int {
+        return dao.getWeatherInfoCount()
+    }
 
+    suspend fun getWeatherInfoByDate(date: String): WeatherInfo? {
+        return dao.getWeatherInfoByDate(date)
+    }
+
+    suspend fun update(weatherInfo: WeatherInfo){
+        return dao.update(weatherInfo)
+    }
 }

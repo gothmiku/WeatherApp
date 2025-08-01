@@ -11,53 +11,41 @@ import kotlinx.coroutines.launch
 import com.example.weatherapp.data.model.WeatherInfo
 import java.time.LocalDateTime
 
-
-//@Database
-//    (entities = [WeatherInfo::class], version = 1, exportSchema = false)
-//abstract class AppDatabase : RoomDatabase() {
-//    abstract fun weatherInfoDAO() : WeatherInfoDAO
-//
-//    private class WeatherDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback(){
-//        override fun onCreate(db: SupportSQLiteDatabase) {
-//            super.onCreate(db)
-//            INSTANCE?.let{
-//                    database ->
-//                scope.launch {
-//                    val weatherInfoo = database.weatherInfoDAO()
-//                    weatherInfoo.deleteAll()
-//                    val weather = WeatherInfo(date=LocalDateTime.now().toString(),temperature="10",humidity="10",windSpeed="10",pressure="10")
-//                    weatherInfoo.insertWeatherInfo(weather)
-//                }
-//            }
-//        }
-//    }
-//
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: AppDatabase? = null
-//
-//        fun getDatabase(context: Context): AppDatabase {
-//            val tempInstance = INSTANCE
-//            if (tempInstance != null) {
-//                return tempInstance
-//            }
-//            synchronized(this) {
-//                val scope = CoroutineScope(Dispatchers.IO)
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    AppDatabase::class.java,
-//                    "weather_dbcache"
-//                )
-//                    .addCallback(WeatherDatabaseCallback(scope))
-//                    .build()
-//                INSTANCE = instance
-//                return instance
-//            }
-//        }
-//    }
-//}
-
 @Database(entities = [WeatherInfo::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherDAO(): WeatherInfoDAO
+
+    private class WeatherDatabaseCallback(
+        private val scope: CoroutineScope
+    ) : RoomDatabase.Callback() {
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            // This runs when database is created for the first time
+            android.util.Log.d("Database", "Database created for the first time")
+        }
+
+        override fun onOpen(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            // This runs every time database is opened
+            android.util.Log.d("Database", "Database opened")
+        }
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "weather_dbcache"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }

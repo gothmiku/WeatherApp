@@ -20,8 +20,8 @@ import javax.inject.Singleton
 object WeatherAppModule {
     @Singleton
     @Provides
-    fun provideWeatherRepo(weatherDAO: WeatherInfoDAO) : WeatherRepo {
-        return WeatherRepo(weatherDAO)
+    fun provideWeatherRepo(weatherDAO: WeatherInfoDAO, weatherAPI: WeatherAPI) : WeatherRepo {
+        return WeatherRepo(weatherDAO,weatherAPI)
     }
 
     @Singleton
@@ -33,7 +33,7 @@ object WeatherAppModule {
     @Singleton
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context) : AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "weather_dbcache").build()
+        return AppDatabase.getDatabase(context)
     }
 
 
