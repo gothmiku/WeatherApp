@@ -5,15 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.weatherapp.data.model.Coordinates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.weatherapp.data.model.WeatherInfo
 import java.time.LocalDateTime
 
-@Database(entities = [WeatherInfo::class], version = 1, exportSchema = false)
+@Database(entities = [WeatherInfo::class, Coordinates::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherDAO(): WeatherInfoDAO
+    abstract fun gpsDAO(): GPSDAO
 
     private class WeatherDatabaseCallback(
         private val scope: CoroutineScope

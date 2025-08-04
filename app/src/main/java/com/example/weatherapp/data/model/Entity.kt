@@ -1,6 +1,8 @@
 package com.example.weatherapp.data.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /*
@@ -8,7 +10,15 @@ I am considering to put date as the primary key and reset the database once in a
 This will be mostly about caching
  */
 
-@Entity(tableName = "WeatherInfo")
+@Entity(tableName = "WeatherInfo",foreignKeys = [
+    ForeignKey(
+        entity = Coordinates::class,
+        parentColumns = ["date"],
+        childColumns = ["date"],
+        onDelete = ForeignKey.CASCADE
+    )
+],
+    indices = [Index("date")])
 data class WeatherInfo(
     @PrimaryKey val date: String,
     val temp: Float,
@@ -18,5 +28,12 @@ data class WeatherInfo(
     val pressure: Int,
     val clouds : Int,
     val uvi : Float,
-    val visibility : Int,
+    val visibility : Int
+)
+
+@Entity(tableName = "Cordinates")
+data class Coordinates(
+    @PrimaryKey val date: String,
+    val lat: Float,
+    val lon: Float,
 )

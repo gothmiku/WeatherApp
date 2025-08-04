@@ -31,15 +31,17 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
 
 
     //TODO
-    fun checkForUpdate(date : String){
-        viewModelScope.launch(Dispatchers.IO) {
-            val oldestWeatherInfo = repo.getLatestWeatherInfo()
-            if(oldestWeatherInfo.date == date){
-
-            }
-
-        }
-    }
+//    fun checkForUpdate(date : String){
+//        viewModelScope.launch(Dispatchers.IO) {
+//            if(date==repo.getLatestWeatherInfo()?.date){
+//                repo.deleteOldestWeatherInfo()
+//                Log.d("ViewModel","Oldest weather info deleted")
+//                val newWeatherInfo = repo.getTodayWeather()
+//                repo.insertWeatherInfo(newWeatherInfo)
+//            }
+//
+//        }
+//    }
 
     suspend fun getAllWeatherInfo(): List<WeatherInfo> {
         return repo.getAllWeatherInfo()
