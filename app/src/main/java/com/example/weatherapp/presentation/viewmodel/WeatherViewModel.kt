@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.local.AppDatabase
 import com.example.weatherapp.data.model.WeatherInfo
+import com.example.weatherapp.data.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 import com.example.weatherapp.data.repo.WeatherRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : ViewModel() {
     val allWeatherInfos: Flow<List<WeatherInfo>> = repo.allWeatherInfos
 
-    fun insertWeatherInfo(weatherInfo: WeatherInfo) {
+    fun insertWeatherInfo(weatherInfo: WeatherInfo) { // This is going to be used either hard coded or converted from API data
         viewModelScope.launch(Dispatchers.IO) {
             if (repo.getWeatherInfoByDate(LocalDate.now().toString()) == weatherInfo) {
                 Log.d("ViewModel","It already exists")
@@ -29,7 +30,13 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
         }
     }
 
+    suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse {
+        return repo.getTodayWeather(latitude, longitude)
+    }
 
+    fun convertWeatherResponseToWeatherInfo(response: WeatherResponse): WeatherInfo{
+        return repo.convertWeatherResponseToWeatherInfo(response)
+    }
 
 //    fun checkForUpdate(date : String){
 //        viewModelScope.launch(Dispatchers.IO) {
