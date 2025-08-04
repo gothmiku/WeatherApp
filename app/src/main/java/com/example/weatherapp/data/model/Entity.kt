@@ -1,6 +1,8 @@
 package com.example.weatherapp.data.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /*
@@ -18,5 +20,12 @@ data class WeatherInfo(
     val pressure: Int,
     val clouds : Int,
     val uvi : Float,
-    val visibility : Int,
+    val visibility : Int
+)
+
+@Entity(tableName = "Coordinates")
+data class Coordinates(
+    @PrimaryKey val date: String,
+    val lat: Float,
+    val lon: Float,
 )

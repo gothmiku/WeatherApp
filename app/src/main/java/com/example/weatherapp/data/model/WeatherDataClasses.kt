@@ -1,10 +1,10 @@
 package com.example.weatherapp.data.model
 
-data class WeatherResponse(
-    val current: CurrentWeather,
-)
+//data class WeatherResponse(
+//    val current: CurrentWeather,
+//)
 
-data class CurrentWeather(
+data class WeatherResponse(
     val temp : Float,
     val feels_like : Float,
     val pressure : Int,
@@ -14,7 +14,8 @@ data class CurrentWeather(
     val clouds : Int,
     val visibility : Int,
     val wind_speed : Float,
-    val weather : List<Weather>
+    val weather : List<Weather>,
+    val dt : String
 )
 
 data class Weather(

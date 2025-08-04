@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.BuildConfig
@@ -22,13 +23,16 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.example.weatherapp.data.model.Weather
+import com.example.weatherapp.presentation.viewmodel.GPSViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var weatherViewModel: WeatherAppViewModel
-    private lateinit var gpsController: GPSController
+    private lateinit var gpsViewModel: GPSViewModel
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -42,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             // Initialize ViewModel and GPS Controller OUTSIDE the listener
             weatherViewModel = ViewModelProvider(this)[WeatherAppViewModel::class.java]
             Log.d("MainAct", "Viewmodel initialized")
-            gpsController = GPSController(this)
+            gpsViewModel = ViewModelProvider(this)[GPSViewModel::class.java]
             Log.d("MainAct", "GPSController initialized")
 
 
@@ -61,8 +65,10 @@ class MainActivity : AppCompatActivity() {
             // Check and request location permission
             checkLocationPermission()
 
-            // Insert sample weather data
-            logDatabase()
+            // Inserting sample weather data
+            //logDatabase(weatherViewModel) // To test stuff without api calls
+            apiTest(weatherViewModel,gpsViewModel)
+
         }catch(e:Exception){
             Log.e("MainAct","Error is on onCreate",e)
         }
@@ -88,7 +94,9 @@ class MainActivity : AppCompatActivity() {
             )
         } else {
             // Permission already granted, get location
-            gpsController.getLastLocation()
+            lifecycleScope.launch(Dispatchers.IO){
+                gpsViewModel.getLatestsGPSInfo()
+            }
         }
     }
 
@@ -102,93 +110,11 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, get location
-                gpsController.getLastLocation()
+                lifecycleScope.launch(Dispatchers.IO){
+                    gpsViewModel.getLatestsGPSInfo()
+                }
             } else {
                 Log.d("GPS", "Location permission denied")
-            }
-        }
-    }
-
-    private fun logDatabase(){
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                Log.d("Database", "=== DATABASE TEST START ===")
-
-                weatherViewModel.deleteAllWeatherInfo()
-                Log.d("Database", "Cleared existing data")
-
-                // Check count after clearing
-                val countAfterClear = weatherViewModel.getWeatherInfoCount()
-                Log.d("Database", "Count after clear: $countAfterClear")
-
-                // Insert multiple test records
-                val testData = listOf(
-                    WeatherInfo(
-                        date = LocalDateTime.now().toString(),
-                        temp = 30.5f,
-                        feels_like = 32.0f,
-                        humidity = 55,
-                        wind_speed = 3.5f,
-                        pressure = 1012,
-                        clouds = 20,
-                        uvi = 7.3f,
-                        visibility = 10000,
-
-                    ),
-                    WeatherInfo(
-                        date = LocalDateTime.now().toString(),
-                        temp = 28.0f,
-                        feels_like = 29.0f,
-                        humidity = 60,
-                        wind_speed = 4.2f,
-                        pressure = 1010,
-                        clouds = 50,
-                        uvi = 5.8f,
-                        visibility = 9500,
-
-                    ),
-                    WeatherInfo(
-                        date = LocalDateTime.now().toString(),
-                        temp = 25.5f,
-                        feels_like = 26.2f,
-                        humidity = 70,
-                        wind_speed = 5.0f,
-                        pressure = 1008,
-                        clouds = 90,
-                        uvi = 3.5f,
-                        visibility = 8000,
-                    )
-                )
-
-                // Insert each record
-                testData.forEach { weather ->
-                    Log.d("Database", "Inserting: $weather")
-                    weatherViewModel.insertWeatherInfo(weather)
-                }
-
-                // Wait a moment for insertions to complete
-                kotlinx.coroutines.delay(1000)
-
-                // Check final count
-                val finalCount = weatherViewModel.getWeatherInfoCount()
-                Log.d("Database", "Final count: $finalCount")
-
-                // Get all data and log it
-                val allData = weatherViewModel.getAllWeatherInfo()
-                Log.d("Database", "All data retrieved: ${allData.size} items")
-
-                allData.forEachIndexed { index, weather ->
-                    Log.d("Database", "Item $index: $weather")
-                }
-
-                // Test latest record
-                val latest = weatherViewModel.getLatestWeatherInfo()
-                Log.d("Database", "Latest record: $latest")
-
-                Log.d("Database", "=== DATABASE TEST END ===")
-
-            } catch (e: Exception) {
-                Log.e("Database", "Database test error", e)
             }
         }
     }
