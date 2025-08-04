@@ -23,8 +23,8 @@ import javax.inject.Singleton
 object GPSModule {
     @Singleton
     @Provides
-    fun provideGPSRepo(gpsDAO: GPSDAO): GPSRepo {
-        return GPSRepo(gpsDAO)
+    fun provideGPSRepo(gpsDAO: GPSDAO,gpsController: GPSController): GPSRepo {
+        return GPSRepo(gpsDAO,gpsController)
     }
 
     @Singleton

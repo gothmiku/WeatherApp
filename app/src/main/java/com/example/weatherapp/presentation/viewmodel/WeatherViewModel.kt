@@ -30,7 +30,7 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
     }
 
 
-    //TODO
+
 //    fun checkForUpdate(date : String){
 //        viewModelScope.launch(Dispatchers.IO) {
 //            if(date==repo.getLatestWeatherInfo()?.date){

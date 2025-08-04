@@ -37,8 +37,8 @@ class GPSViewModel @Inject constructor(private val repo: GPSRepo) : ViewModel() 
         }
     }
 
-    suspend fun getLatestsGPSInfo(){
-        return repo.latestsGPSInfo()
+    suspend fun getLatestsGPSInfo() : Coordinates?{
+        return repo.latestGPSInfo()
     }
 
 

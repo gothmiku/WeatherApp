@@ -16,7 +16,7 @@ interface GPSDAO{
     fun getAllCoordinatesFlow(): Flow<List<Coordinates>>
 
     @Query("SELECT * FROM Coordinates ORDER BY date DESC LIMIT 1")
-    suspend fun latestsGPSInfo() : Coordinates?
+    suspend fun latestGPSInfo() : Coordinates?
 
     @Query("DELETE FROM Coordinates")
     suspend fun deleteAll()
