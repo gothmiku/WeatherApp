@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import com.example.weatherapp.data.model.WeatherInfo
 import java.time.LocalDateTime
 
-@Database(entities = [WeatherInfo::class, Coordinates::class], version = 2, exportSchema = false)
+@Database(entities = [WeatherInfo::class, Coordinates::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherDAO(): WeatherInfoDAO
     abstract fun gpsDAO(): GPSDAO
@@ -41,10 +41,10 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "weather_dbcache"
-                ).build()
+                                context.applicationContext,
+                                AppDatabase::class.java,
+                                "database"
+                            ).fallbackToDestructiveMigration(true).build()
                 INSTANCE = instance
                 instance
             }

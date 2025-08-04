@@ -4,9 +4,12 @@ import android.Manifest
 import android.content.Context
 import android.util.Log
 import androidx.annotation.RequiresPermission
+import com.example.weatherapp.data.local.GPSDAO
+import com.example.weatherapp.data.repo.GPSRepo
 import com.google.android.gms.location.LocationServices
+import javax.inject.Inject
 
-class GPSController(context : Context) {
+class GPSController @Inject constructor(context : Context, private val gpsDAO: GPSDAO) {
 
 
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -22,5 +25,9 @@ class GPSController(context : Context) {
                 Log.d("GPS", "GPS couldn't receive the location data")
             }
         }
+    }
+
+    fun insertLocation(){
+
     }
 }

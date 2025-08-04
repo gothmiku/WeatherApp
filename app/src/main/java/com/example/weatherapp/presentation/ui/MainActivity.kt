@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.BuildConfig
@@ -22,13 +23,14 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.example.weatherapp.data.model.Weather
+import com.example.weatherapp.presentation.viewmodel.GPSViewModel
 import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var weatherViewModel: WeatherAppViewModel
-    private lateinit var gpsController: GPSController
+    private lateinit var gpsViewModel: GPSViewModel
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             // Initialize ViewModel and GPS Controller OUTSIDE the listener
             weatherViewModel = ViewModelProvider(this)[WeatherAppViewModel::class.java]
             Log.d("MainAct", "Viewmodel initialized")
-            gpsController = GPSController(this)
+            gpsViewModel = ViewModelProvider(this)[GPSViewModel::class.java]
             Log.d("MainAct", "GPSController initialized")
 
 

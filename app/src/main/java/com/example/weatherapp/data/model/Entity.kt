@@ -10,15 +10,7 @@ I am considering to put date as the primary key and reset the database once in a
 This will be mostly about caching
  */
 
-@Entity(tableName = "WeatherInfo",foreignKeys = [
-    ForeignKey(
-        entity = Coordinates::class,
-        parentColumns = ["date"],
-        childColumns = ["date"],
-        onDelete = ForeignKey.CASCADE
-    )
-],
-    indices = [Index("date")])
+@Entity(tableName = "WeatherInfo")
 data class WeatherInfo(
     @PrimaryKey val date: String,
     val temp: Float,
@@ -31,7 +23,7 @@ data class WeatherInfo(
     val visibility : Int
 )
 
-@Entity(tableName = "Cordinates")
+@Entity(tableName = "Coordinates")
 data class Coordinates(
     @PrimaryKey val date: String,
     val lat: Float,
