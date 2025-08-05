@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.local.AppDatabase
+import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +25,7 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
 
     fun insertWeatherInfo(weatherInfo: WeatherInfo) { // This is going to be used either hard coded or converted from API data
         viewModelScope.launch(Dispatchers.IO) {
-            if (repo.getWeatherInfoByDate(LocalDate.now().toString()) == weatherInfo) {
+            if (repo.getWeatherInfoByDate(LocalDate.now(ZoneId.systemDefault()).atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString()) == weatherInfo) {
                 Log.d("ViewModel","It already exists")
             }else{
                 repo.insertWeatherInfo(weatherInfo)
@@ -30,12 +33,21 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
         }
     }
 
+
+
     suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse {
         return repo.getTodayWeather(latitude, longitude)
     }
 
+    //TODO we need to get stuff from daily from the JSON
+    suspend fun getForecastWeather(latitude: Float, longitude: Float): Forecast {
+        return repo.getForecastWeather(latitude, longitude)
+    }
+    fun convertForecastResponseToWeatherInfo(response: Forecast,dayFromNow : Int): WeatherInfo{
+        return repo.convertForecastResponseToWeatherInfo(response,dayFromNow)!!
+    }
     fun convertWeatherResponseToWeatherInfo(response: WeatherResponse): WeatherInfo{
-        return repo.convertWeatherResponseToWeatherInfo(response)
+        return repo.convertWeatherResponseToWeatherInfo(response)!!
     }
 
 //    fun checkForUpdate(date : String){
