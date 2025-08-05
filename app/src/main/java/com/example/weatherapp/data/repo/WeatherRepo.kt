@@ -38,15 +38,15 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
 
     fun convertWeatherResponseToWeatherInfo(response: WeatherResponse): WeatherInfo {
         return WeatherInfo(
-            temp=response.data.temp,
-            feels_like=response.data.feelsLike,
-            pressure=response.data.pressure,
-            humidity=response.data.humidity,
-            uvi=response.data.uvi,
-            clouds=response.data.clouds,
-            visibility=response.data.visibility,
-            wind_speed=response.data.windSpeed,
-            date=response.data.dt.toString()
+            temp=response.data[0].temp,
+            feels_like=response.data[0].feelsLike,
+            pressure=response.data[0].pressure,
+            humidity=response.data[0].humidity,
+            uvi=response.data[0].uvi,
+            clouds=response.data[0].clouds,
+            visibility=response.data[0].visibility,
+            wind_speed=response.data[0].windSpeed,
+            date=response.data[0].dt.toString()
         )
     }
 

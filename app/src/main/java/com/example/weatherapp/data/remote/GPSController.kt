@@ -13,6 +13,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.time.Clock
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
@@ -55,7 +57,7 @@ suspend fun insertLocation() {
             // Switch to IO dispatcher for database operation
             withContext(Dispatchers.IO) {
                 gpsDAO.insertGPSInfo(Coordinates(
-                    date = LocalDate.now(ZoneId.systemDefault()).atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString(),
+                    date = Instant.now(Clock.system(ZoneId.systemDefault())).epochSecond.toString(),
                     lat = latitude.toFloat(),
                     lon = longitude.toFloat()
                 ))
@@ -80,7 +82,7 @@ suspend fun insertLocation() {
                 val longitude = location.longitude
                 Log.d("GPS", "Location is $latitude and $longitude")
                 Coordinates(
-                    date = LocalDate.now(ZoneId.systemDefault()).atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString(),
+                    date = Instant.now(Clock.system(ZoneId.systemDefault())).epochSecond.toString(),
                     lat = latitude.toFloat(),
                     lon = longitude.toFloat()
                 )

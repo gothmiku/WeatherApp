@@ -8,7 +8,7 @@ data class WeatherResponse(
     val timezone: String,
     @SerializedName("timezone_offset")
     val timezoneOffset: Int,
-    val data: WeatherData
+    val data: List<WeatherData>
 )
 
 data class WeatherData(
@@ -31,7 +31,7 @@ data class WeatherData(
     val windDeg: Int,
     @SerializedName("wind_gust")
     val windGust: Float,
-    val weather: Weather
+    val weather: List<Weather>
 )
 
 data class Weather(

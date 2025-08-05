@@ -14,6 +14,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +24,7 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
 
     fun insertWeatherInfo(weatherInfo: WeatherInfo) { // This is going to be used either hard coded or converted from API data
         viewModelScope.launch(Dispatchers.IO) {
-            if (repo.getWeatherInfoByDate(LocalDate.now().toString()) == weatherInfo) {
+            if (repo.getWeatherInfoByDate(LocalDate.now(ZoneId.systemDefault()).atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString()) == weatherInfo) {
                 Log.d("ViewModel","It already exists")
             }else{
                 repo.insertWeatherInfo(weatherInfo)

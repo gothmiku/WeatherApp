@@ -100,7 +100,12 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
 @RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
 fun apiTest(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel){
     CoroutineScope(Dispatchers.IO).launch {
-        gpsViewModel.insertGPSInfo(gpsViewModel.getLastLocation()!!)
+        val coordinates = gpsViewModel.getLastLocation()
+        if (coordinates == null) {
+            Log.e("GPS", "Failed to get location - location is null")
+            return@launch
+        }
+        gpsViewModel.insertGPSInfo(coordinates)
         val gpsInfo = gpsViewModel.getLatestsGPSInfo()
         Log.d("GPS", "GPS info: ${gpsInfo?.lat}, ${gpsInfo?.lon}")
         Log.d("GPS","GPS Info variable data type is ${gpsInfo?.javaClass}")
@@ -108,6 +113,9 @@ fun apiTest(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel){
             val weather = weatherViewModel.getTodayWeather(gpsInfo!!.lat, gpsInfo.lon)
             Log.d("API", "API test success")
             val input = weatherViewModel.convertWeatherResponseToWeatherInfo(weather)
+            Log.d("Insertion","Input data is the class of ${input.javaClass}" +
+                    "\n and the data date is ${input.date}" +
+                    "\n and the data temp is ${input.temp}")
             weatherViewModel.insertWeatherInfo(input)
         }
         catch (e: Exception) {
