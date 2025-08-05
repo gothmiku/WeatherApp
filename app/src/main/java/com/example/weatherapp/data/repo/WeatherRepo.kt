@@ -2,6 +2,7 @@ package com.example.weatherapp.data.repo
 
 import android.util.Log
 import com.example.weatherapp.data.local.WeatherInfoDAO
+import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.model.WeatherResponse
 import com.example.weatherapp.data.remote.WeatherAPI
@@ -26,7 +27,7 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
         }
     }
 
-    suspend fun getForecast(latitude: Float, longitude: Float): WeatherResponse{
+    suspend fun getForecastWeather(latitude: Float, longitude: Float): Forecast {
         val response = api.getForecast(latitude, longitude)
         if (response.isSuccessful) {
             return response.body()!!
@@ -36,17 +37,37 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
         }
     }
 
+    /**
+     * Converts forecast response to WeatherInfo.
+     *
+     * @param response The forecast response object.
+     * @param dayFromNow The number of days from now to get the forecast for.
+     *  */
+    fun convertForecastResponseToWeatherInfo(response: Forecast,dayFromNow : Int): WeatherInfo {
+        return WeatherInfo(
+            temp=response.daily[dayFromNow].temp.day,
+            feels_like=response.daily[dayFromNow].feelsLike.day,
+            pressure=response.daily[dayFromNow].pressure,
+            humidity=response.daily[dayFromNow].humidity,
+            uvi=response.daily[dayFromNow].uvi,
+            clouds=response.daily[dayFromNow].clouds,
+            visibility=response.daily[dayFromNow].visibility,
+            wind_speed=response.daily[dayFromNow].windSpeed,
+            date=response.daily[dayFromNow].dt.toString()
+        )
+    }
+
     fun convertWeatherResponseToWeatherInfo(response: WeatherResponse): WeatherInfo {
         return WeatherInfo(
-            temp=response.data[0].temp,
-            feels_like=response.data[0].feelsLike,
-            pressure=response.data[0].pressure,
-            humidity=response.data[0].humidity,
-            uvi=response.data[0].uvi,
-            clouds=response.data[0].clouds,
-            visibility=response.data[0].visibility,
-            wind_speed=response.data[0].windSpeed,
-            date=response.data[0].dt.toString()
+            temp=response.current.temp,
+            feels_like=response.current.feelsLike,
+            pressure=response.current.pressure,
+            humidity=response.current.humidity,
+            uvi=response.current.uvi,
+            clouds=response.current.clouds,
+            visibility=response.current.visibility,
+            wind_speed=response.current.windSpeed,
+            date=response.current.dt.toString()
         )
     }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.local.AppDatabase
+import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
@@ -38,8 +39,15 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
         return repo.getTodayWeather(latitude, longitude)
     }
 
+    //TODO we need to get stuff from daily from the JSON
+    suspend fun getForecastWeather(latitude: Float, longitude: Float): Forecast {
+        return repo.getForecastWeather(latitude, longitude)
+    }
+    fun convertForecastResponseToWeatherInfo(response: Forecast,dayFromNow : Int): WeatherInfo{
+        return repo.convertForecastResponseToWeatherInfo(response,dayFromNow)!!
+    }
     fun convertWeatherResponseToWeatherInfo(response: WeatherResponse): WeatherInfo{
-        return repo.convertWeatherResponseToWeatherInfo(response)
+        return repo.convertWeatherResponseToWeatherInfo(response)!!
     }
 
 //    fun checkForUpdate(date : String){

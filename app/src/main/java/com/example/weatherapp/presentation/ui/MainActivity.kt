@@ -67,7 +67,9 @@ class MainActivity : AppCompatActivity() {
 
             // Inserting sample weather data
             //logDatabase(weatherViewModel) // To test stuff without api calls
-            apiTest(weatherViewModel,gpsViewModel)
+            //apiTest(weatherViewModel,gpsViewModel)
+
+            apiForecastTest(gpsViewModel,weatherViewModel)
 
         }catch(e:Exception){
             Log.e("MainAct","Error is on onCreate",e)

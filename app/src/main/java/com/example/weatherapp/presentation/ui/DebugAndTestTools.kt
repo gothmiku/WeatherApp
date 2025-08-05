@@ -10,6 +10,7 @@ import com.example.weatherapp.presentation.viewmodel.GPSViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
+// Success
 fun logDatabase(weatherViewModel: WeatherAppViewModel) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
@@ -96,7 +97,7 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
 
 }
 
-//TODO It gave me a null. I think the cause of it is that my API membership is the free plan.
+//Success. I will use it as a template for insertion
 @RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
 fun apiTest(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel){
     CoroutineScope(Dispatchers.IO).launch {
@@ -112,6 +113,7 @@ fun apiTest(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel){
         try {
             val weather = weatherViewModel.getTodayWeather(gpsInfo!!.lat, gpsInfo.lon)
             Log.d("API", "API test success")
+            Log.d("API","Response is:\n${weather.toString()}")
             val input = weatherViewModel.convertWeatherResponseToWeatherInfo(weather)
             Log.d("Insertion","Input data is the class of ${input.javaClass}" +
                     "\n and the data date is ${input.date}" +
@@ -124,3 +126,34 @@ fun apiTest(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel){
     }
 
 }
+
+//Success. I will use it as a template for insertion
+@RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
+fun apiForecastTest(gpsViewModel : GPSViewModel,weatherViewModel: WeatherAppViewModel){
+    CoroutineScope(Dispatchers.IO).launch {
+        val coordinates = gpsViewModel.getLastLocation()
+        if (coordinates == null) {
+            Log.e("GPS", "Failed to get location - location is null")
+            return@launch
+        }
+        gpsViewModel.insertGPSInfo(coordinates)
+        val gpsInfo = gpsViewModel.getLatestsGPSInfo()
+        Log.d("GPS", "GPS info: ${gpsInfo?.lat}, ${gpsInfo?.lon}")
+        Log.d("GPS","GPS Info variable data type is ${gpsInfo?.javaClass}")
+        try {
+            val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
+            Log.d("API", "API test success")
+            Log.d("API","Response is:\n${weather.toString()}")
+            val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,1)
+            Log.d("Insertion","Input data is the class of ${input.javaClass}" +
+                    "\n and the data date is ${input.date}" +
+                    "\n and the data temp is ${input.temp}")
+            weatherViewModel.insertWeatherInfo(input)
+        }
+        catch (e: Exception) {
+            Log.e("API", "API test error", e)
+        }
+    }
+}
+
+//TODO Check DB if updates are needed. If so, call API and store it there. Design the pattern of when to check DB and when to call API. 😂😂

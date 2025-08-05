@@ -2,6 +2,7 @@ package com.example.weatherapp.data.remote
 
 import android.util.Log
 import com.example.weatherapp.BuildConfig.API_KEY
+import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherResponse
 import org.json.JSONObject
 import retrofit2.Response
@@ -19,47 +20,20 @@ interface WeatherAPI{
     suspend fun getToday(
         @Query("lat") latitude : Float,
         @Query("lon") longtitude : Float,
-        @Query("exclude") exclude : String = "minutely,hourly,alerts",
+        @Query("exclude",encoded = true ) exclude : String = "minutely,hourly,alerts",
         @Query("appid") apiKey : String = API_KEY,
         @Query("units") units : String = "metric",
-        @Query("dt") date : String = LocalDate.now(ZoneId.systemDefault()).atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString()
     ) : Response<WeatherResponse>
 
     @GET("onecall")
     suspend fun getForecast(
         @Query("lat") latitude : Float,
         @Query("lon") longtitude : Float,
-        @Query("exclude") exclude : String = "minutely,current,alerts",
+        @Query("exclude",encoded = true ) exclude : String = "current,minutely,hourly,alerts",
         @Query("appid") apiKey : String = API_KEY,
         @Query("units") units : String = "metric",
-        @Query("date") date : String = LocalDate.now().plusDays(1).toString()
+    ) : Response<Forecast>
 
-
-    ) : Response<WeatherResponse>
-
-    @GET("onecall")
-    suspend fun getForecast2(
-        @Query("lat") latitude : Float,
-        @Query("lon") longtitude : Float,
-        @Query("exclude") exclude : String = "minutely,current,alerts",
-        @Query("appid") apiKey : String = API_KEY,
-        @Query("units") units : String = "metric",
-        @Query("date") date : String = LocalDate.now().plusDays(2).toString()
-
-
-    ) : Response<WeatherResponse>
-
-    @GET("onecall")
-    suspend fun getForecast3(
-        @Query("lat") latitude : Float,
-        @Query("lon") longtitude : Float,
-        @Query("exclude") exclude : String = "minutely,current,alerts",
-        @Query("appid") apiKey : String = API_KEY,
-        @Query("units") units : String = "metric",
-        @Query("date") date : String = LocalDate.now().plusDays(3).toString()
-
-
-    ) : Response<WeatherResponse>
 
 
     fun <T> retrofitErrorHandler(res: Response<T>): T {
@@ -77,13 +51,15 @@ interface WeatherAPI{
     }
 
     fun checkDateEquals(date: String, response: WeatherResponse): Boolean {
-        if(response.data[0].dt.toString() == date){
-            Log.d("Time","Entered date $date and response date ${response.data[0].dt} are equals")
+        if(response.current.dt.toString() == date){
+            Log.d("Time","Entered date $date and response date ${response.current.dt} are equals")
             return true
         }else{
-            Log.d("Time","Entered date $date and response date ${response.data[0].dt} are not equals")
+            Log.d("Time","Entered date $date and response date ${response.current.dt} are not equals")
             return false
         }
     }
+
+
 
 }
