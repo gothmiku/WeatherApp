@@ -77,11 +77,11 @@ interface WeatherAPI{
     }
 
     fun checkDateEquals(date: String, response: WeatherResponse): Boolean {
-        if(response.dt == date){
-            Log.d("Time","Entered date $date and response date ${response.dt} are equals")
+        if(response.data.dt.toString() == date){
+            Log.d("Time","Entered date $date and response date ${response.data.dt} are equals")
             return true
         }else{
-            Log.d("Time","Entered date $date and response date ${response.dt} are not equals")
+            Log.d("Time","Entered date $date and response date ${response.data.dt} are not equals")
             return false
         }
     }

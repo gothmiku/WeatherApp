@@ -30,6 +30,8 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
         }
     }
 
+
+
     suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse {
         return repo.getTodayWeather(latitude, longitude)
     }

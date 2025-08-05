@@ -1,6 +1,7 @@
 package com.example.weatherapp.presentation.ui
 
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
 import kotlinx.coroutines.launch
@@ -95,11 +96,14 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
 
 }
 
-//TODO The gave me a null. I think the cause is that my API membership is the free plan.
+//TODO It gave me a null. I think the cause of it is that my API membership is the free plan.
+@RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
 fun apiTest(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel){
     CoroutineScope(Dispatchers.IO).launch {
+        gpsViewModel.insertGPSInfo(gpsViewModel.getLastLocation()!!)
         val gpsInfo = gpsViewModel.getLatestsGPSInfo()
-
+        Log.d("GPS", "GPS info: ${gpsInfo?.lat}, ${gpsInfo?.lon}")
+        Log.d("GPS","GPS Info variable data type is ${gpsInfo?.javaClass}")
         try {
             val weather = weatherViewModel.getTodayWeather(gpsInfo!!.lat, gpsInfo.lon)
             Log.d("API", "API test success")

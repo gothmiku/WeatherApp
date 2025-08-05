@@ -2,6 +2,7 @@ package com.example.weatherapp.presentation.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,14 +32,17 @@ class GPSViewModel @Inject constructor(private val repo: GPSRepo) : ViewModel() 
         return repo.getGPSInfoByDate(date)
     }
 
-    fun insertGPSInfo(coordinates: Coordinates) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.insertGPSInfo(coordinates)
-        }
+    suspend fun insertGPSInfo(coordinates: Coordinates) {
+        repo.insertGPSInfo(coordinates)
     }
 
     suspend fun getLatestsGPSInfo() : Coordinates?{
         return repo.latestGPSInfo()
+    }
+
+    @RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
+    suspend fun getLastLocation() : Coordinates?{
+        return repo.getLastLocation()
     }
 
 
