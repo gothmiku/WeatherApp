@@ -7,22 +7,19 @@ import androidx.annotation.RequiresPermission
 import com.example.weatherapp.data.local.GPSDAO
 import com.example.weatherapp.data.model.Coordinates
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.time.Clock
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
+import com.example.weatherapp.util.DateHandle
 
 
 class GPSController @Inject constructor(context: Context, private val gpsDAO: GPSDAO) {
 
-
+    val date = DateHandle()
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
 //    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
@@ -57,7 +54,7 @@ suspend fun insertLocation() {
             // Switch to IO dispatcher for database operation
             withContext(Dispatchers.IO) {
                 gpsDAO.insertGPSInfo(Coordinates(
-                    date = Instant.now(Clock.system(ZoneId.systemDefault())).epochSecond.toString(),
+                    date = date.getUnixTimestampString(),
                     lat = latitude.toFloat(),
                     lon = longitude.toFloat()
                 ))
@@ -82,7 +79,7 @@ suspend fun insertLocation() {
                 val longitude = location.longitude
                 Log.d("GPS", "Location is $latitude and $longitude")
                 Coordinates(
-                    date = Instant.now(Clock.system(ZoneId.systemDefault())).epochSecond.toString(),
+                    date = Instant.now().epochSecond.toString(),
                     lat = latitude.toFloat(),
                     lon = longitude.toFloat()
                 )

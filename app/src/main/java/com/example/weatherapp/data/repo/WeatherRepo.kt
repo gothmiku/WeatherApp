@@ -6,6 +6,7 @@ import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.model.WeatherResponse
 import com.example.weatherapp.data.remote.WeatherAPI
+import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import javax.inject.Inject
@@ -69,6 +70,10 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             wind_speed=response.current.windSpeed,
             date=response.current.dt.toString()
         )
+    }
+
+    fun fillEmptyDayFields(weatherAppViewModel: WeatherAppViewModel) {
+
     }
 
 

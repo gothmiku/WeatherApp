@@ -144,7 +144,7 @@ fun apiForecastTest(gpsViewModel : GPSViewModel,weatherViewModel: WeatherAppView
             val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
             Log.d("API", "API test success")
             Log.d("API","Response is:\n${weather.toString()}")
-            val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,1)
+            val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,3)
             Log.d("Insertion","Input data is the class of ${input.javaClass}" +
                     "\n and the data date is ${input.date}" +
                     "\n and the data temp is ${input.temp}")
