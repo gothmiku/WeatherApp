@@ -30,6 +30,7 @@ import kotlinx.coroutines.coroutineScope
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    //TODO Check if internet is available before checking for newer data
 
     private lateinit var weatherViewModel: WeatherAppViewModel
     private lateinit var gpsViewModel: GPSViewModel
@@ -65,13 +66,12 @@ class MainActivity : AppCompatActivity() {
             // Check and request location permission
             checkLocationPermission()
 
-            // Debugging and Test functions
+            // Debugging and Test funcitions
+
             //logDatabase(weatherViewModel) // To test stuff without api calls
             //apiTest(weatherViewModel,gpsViewModel)
             //apiForecastTest(gpsViewModel,weatherViewModel)
             //checkAndFillDB(weatherViewModel,gpsViewModel)
-
-
 
         }catch(e:Exception){
             Log.e("MainAct","Error is on onCreate",e)
