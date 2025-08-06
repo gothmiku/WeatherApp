@@ -65,11 +65,13 @@ class MainActivity : AppCompatActivity() {
             // Check and request location permission
             checkLocationPermission()
 
-            // Inserting sample weather data
+            // Debugging and Test functions
             //logDatabase(weatherViewModel) // To test stuff without api calls
             //apiTest(weatherViewModel,gpsViewModel)
+            //apiForecastTest(gpsViewModel,weatherViewModel)
+            //checkAndFillDB(weatherViewModel,gpsViewModel)
 
-            apiForecastTest(gpsViewModel,weatherViewModel)
+
 
         }catch(e:Exception){
             Log.e("MainAct","Error is on onCreate",e)

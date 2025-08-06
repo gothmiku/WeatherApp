@@ -54,7 +54,9 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             clouds=response.daily[dayFromNow].clouds,
             visibility=response.daily[dayFromNow].visibility,
             wind_speed=response.daily[dayFromNow].windSpeed,
-            date=response.daily[dayFromNow].dt.toString()
+            date=response.daily[dayFromNow].dt.toString(),
+            weather = response.daily[dayFromNow].weather[0].main,
+            weatherDescription = response.daily[dayFromNow].weather[0].description
         )
     }
 
@@ -68,7 +70,9 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             clouds=response.current.clouds,
             visibility=response.current.visibility,
             wind_speed=response.current.windSpeed,
-            date=response.current.dt.toString()
+            date=response.current.dt.toString(),
+            weather = response.current.weather[0].main,
+            weatherDescription = response.current.weather[0].description
         )
     }
 
@@ -94,8 +98,16 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
         return dao.getAllWeatherInfo()
     }
 
+    suspend fun deleteAllExcept(datesToKeep: List<String>) {
+        dao.deleteAllExcept(datesToKeep)
+    }
+
     suspend fun getLatestWeatherInfo(): WeatherInfo? {
         return dao.getLatestWeatherInfo()
+    }
+
+    suspend fun getOldestWeatherInfo(): WeatherInfo? {
+        return dao.getOldestWeatherInfo()
     }
 
     suspend fun deleteOldestWeatherInfo(){

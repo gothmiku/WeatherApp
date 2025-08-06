@@ -30,7 +30,13 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
         }
     }
 
+    suspend fun getWeatherInfoByDate(date: String): WeatherInfo? {
+        return repo.getWeatherInfoByDate(date)
+    }
 
+    suspend fun deleteAllExcept(datesToKeep: List<String>) {
+        repo.deleteAllExcept(datesToKeep)
+    }
 
     suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse {
         return repo.getTodayWeather(latitude, longitude)
@@ -61,6 +67,14 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
 
     suspend fun getAllWeatherInfo(): List<WeatherInfo> {
         return repo.getAllWeatherInfo()
+    }
+
+    suspend fun getOldestWeatherInfo(): WeatherInfo? {
+        return repo.getOldestWeatherInfo()
+    }
+
+    suspend fun deleteOldestWeatherInfo() {
+        repo.deleteOldestWeatherInfo()
     }
 
     suspend fun getLatestWeatherInfo(): WeatherInfo? {

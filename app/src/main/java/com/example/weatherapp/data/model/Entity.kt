@@ -20,7 +20,9 @@ data class WeatherInfo(
     val pressure: Int,
     val clouds : Int,
     val uvi : Float,
-    val visibility : Int
+    val visibility : Int,
+    val weather : String,
+    val weatherDescription : String
 )
 
 @Entity(tableName = "Coordinates")

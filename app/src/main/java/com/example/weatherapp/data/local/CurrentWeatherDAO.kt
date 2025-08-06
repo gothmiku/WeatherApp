@@ -13,6 +13,9 @@ interface WeatherInfoDAO{
     @Insert
     suspend fun insertWeatherInfo(weatherInfo: WeatherInfo)
 
+    @Query("DELETE FROM WeatherInfo WHERE date NOT IN (:datesToKeep)")
+    suspend fun deleteAllExcept(datesToKeep: List<String>)
+
     @Query("SELECT * FROM WeatherInfo WHERE date = :date")
     fun getWeatherInfoByDate(date: String): WeatherInfo?
 
@@ -30,6 +33,7 @@ interface WeatherInfoDAO{
 
     @Query("SELECT * FROM WeatherInfo ORDER BY date DESC LIMIT 1")
     fun getLatestWeatherInfo(): WeatherInfo?
+
 
     @Query("SELECT * FROM WeatherInfo ORDER BY date ASC LIMIT 1")
     fun getOldestWeatherInfo(): WeatherInfo?

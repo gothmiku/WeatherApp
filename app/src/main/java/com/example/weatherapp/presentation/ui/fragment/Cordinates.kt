@@ -8,5 +8,6 @@ import com.example.weatherapp.R
 class Cordinates : Fragment(R.layout.location_layout){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
 
+
     }
 }
