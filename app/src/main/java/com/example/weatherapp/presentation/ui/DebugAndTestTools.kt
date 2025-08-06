@@ -183,20 +183,22 @@ fun checkAndFillDB(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewMo
             val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
             val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,7)
             weatherViewModel.insertWeatherInfo(input)
+        }else{
+            Log.d("Database","Day is up to date")
         }
-
+        Log.d("Database","Logging all the dates in the database...")
         for (x in 0..7) {
             val dateString = date.getDatePlusDay(x.toLong()).toString()
             if (weatherViewModel.getWeatherInfoByDate(dateString) != null) {
                 listToKeep.add(dateString) //Making a list of dates that already exist in the database and is within the first 7 days (8 If you count today)
             }
         }
-
+        Log.d("Database","Deleting all the dates that are not in the date list...")
         weatherViewModel.deleteAllExcept(listToKeep) // Deletes everything that is not in the date list
-
+        Log.d("Database","Deleted successfully")
         if(weatherViewModel.getWeatherInfoCount()<=8){
             val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
-            Log.d("API", "API test success")
+            Log.d("API", "API call successful")
             Log.d("API","Response is:\n${weather.toString()}")
             for(x in 0..7){
                 val expectedDate = date.getDatePlusDay(x.toLong()).toString()
@@ -208,6 +210,8 @@ fun checkAndFillDB(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewMo
                     weatherViewModel.insertWeatherInfo(input)
                 }
             }
+        }else{
+            Log.d("Database","No missing entries.Database is up to date")
         }
     }
 
