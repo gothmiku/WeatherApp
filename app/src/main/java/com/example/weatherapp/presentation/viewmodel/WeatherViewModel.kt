@@ -30,6 +30,9 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
         }
     }
 
+
+
+
     suspend fun getWeatherInfoByDate(date: String): WeatherInfo? {
         return repo.getWeatherInfoByDate(date)
     }

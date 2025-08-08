@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.MainActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        android:padding="5dp"
+        android:id="@+id/forecastRecycleFragment">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

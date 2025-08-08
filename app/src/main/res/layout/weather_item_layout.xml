@@ -8,11 +8,11 @@
     <ImageView
         android:id="@+id/weatherIcon"
         android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="3dp"
         android:src="@drawable/cloud"
-        app:tint="@color/md_theme_onSurface"
+        app:tint="@color/md_theme_onPrimaryContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,34 +20,65 @@
         android:id="@+id/tempText"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="1dp"
-        android:fontFamily="@font/poppins_bold_italic"
-        android:text="32"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/poppins_extrabold_italic"
+        android:gravity="center"
+        android:text="36"
         android:textAlignment="center"
-        android:textColor="@color/md_theme_onSurface"
+        android:textColor="@color/md_theme_onPrimaryContainer"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/weatherIcon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/weatherIcon" />
+    <TextView
+        android:id="@+id/CelsiusText"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/poppins_extrabold_italic"
+        android:gravity="center"
+        android:text="°C"
+        android:textAlignment="center"
+        android:textColor="@color/md_theme_onPrimaryContainer"
+        android:textSize="15sp"
+        android:alpha="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tempText"
+        app:layout_constraintBottom_toBottomOf="@id/weatherIcon"
+         />
 
     <TextView
         android:id="@+id/weatherText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="62dp"
-        android:textSize="11sp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="9dp"
+        android:fontFamily="@font/poppins_bold_italic"
         android:text="Meow"
-        app:layout_constraintStart_toStartOf="@id/tempText"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/md_theme_onPrimaryContainer"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/CelsiusText"
+        app:layout_constraintBottom_toBottomOf="@id/weatherIcon" />
 
     <TextView
         android:id="@+id/weatherDescriptionText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:layout_marginStart="62dp"
-        android:textSize="9sp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="-8dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="Meow"
-        app:layout_constraintStart_toStartOf="@id/tempText"
-        app:layout_constraintTop_toTopOf="@id/weatherText" />
+        android:alpha="0.5"
+        android:textColor="@color/md_theme_onPrimaryContainer"
+        android:textSize="7sp"
+        app:layout_constraintStart_toStartOf="@id/weatherText"
+        app:layout_constraintTop_toBottomOf="@id/weatherText" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="30dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +24,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.example.weatherapp.data.model.Weather
+import com.example.weatherapp.presentation.ui.fragment.HumidityFragment
+import com.example.weatherapp.presentation.ui.fragment.WeatherFragment
 import com.example.weatherapp.presentation.viewmodel.GPSViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,6 +75,15 @@ class MainActivity : AppCompatActivity() {
             //apiTest(weatherViewModel,gpsViewModel)
             //apiForecastTest(gpsViewModel,weatherViewModel)
             //checkAndFillDB(weatherViewModel,gpsViewModel)
+
+
+//            This places the frame layout with the fragment
+            if (savedInstanceState == null) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.forecastRecycleFragment, HumidityFragment())
+                    .commit()
+            }
+
 
         }catch(e:Exception){
             Log.e("MainAct","Error is on onCreate",e)

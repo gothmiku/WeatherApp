@@ -54,6 +54,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.runtime.saved.instance.state)
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
     ksp(libs.androidx.room.compiler)
@@ -104,6 +105,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v270)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
     implementation("com.google.android.material:material:1.12.0")
 }
