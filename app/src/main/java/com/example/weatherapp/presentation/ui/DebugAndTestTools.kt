@@ -220,4 +220,6 @@ fun checkAndFillDB(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewMo
 
 }
 
+
+
 //TODO Check DB if updates are needed. If so, call API and store it there. Design the pattern of when to check DB and when to call API. 😂😂
