@@ -22,7 +22,7 @@ import androidx.lifecycle.repeatOnLifecycle
 
 
 @AndroidEntryPoint
-class WeatherFragment : Fragment(R.layout.location_layout) {
+class WeatherForecastFragment : Fragment(R.layout.location_layout) {
 
     private lateinit var viewModel: WeatherAppViewModel
     private lateinit var adapter: WeatherAdapter

@@ -25,6 +25,7 @@ fragment = "1.8.8"
 recyclerview = "1.4.0"
 runtimeSavedInstanceState = "1.0.0-alpha11"
 lifecycleViewmodelAndroid = "2.9.2"
+uiGraphicsJvmstubs = "1.8.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -63,6 +64,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-runtime-saved-instance-state = { group = "androidx.compose.runtime", name = "runtime-saved-instance-state", version.ref = "runtimeSavedInstanceState" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
+androidx-ui-graphics-jvmstubs = { group = "androidx.compose.ui", name = "ui-graphics-jvmstubs", version.ref = "uiGraphicsJvmstubs" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version = "2.57" }
