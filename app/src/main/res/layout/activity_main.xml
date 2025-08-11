@@ -10,25 +10,42 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbars="none"
+        android:nestedScrollingEnabled="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/currentWeatherFragment">
 
             </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weatherForecastFragment"
+                    android:layout_weight="5"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@color/md_theme_error"/>
+            </LinearLayout>
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/humidityFragment" />
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/weatherForecastFragment" />
         </LinearLayout>
     </ScrollView>
 
