@@ -1,6 +1,7 @@
 <resources>
     <color name="md_theme_primary">#2D628B</color>
     <color name="COLOR_TRANSPARENT">#00000000</color>
+    <color name="myBackground">#e3dbcc</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#CDE5FF</color>
     <color name="md_theme_onPrimaryContainer">#0A4A72</color>

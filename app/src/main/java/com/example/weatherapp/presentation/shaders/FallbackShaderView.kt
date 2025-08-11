@@ -11,12 +11,43 @@ class FallbackShaderView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-
+    private var humidity = 50f
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val startTime = System.currentTimeMillis()
 
     init {
-        paint.color = Color.parseColor("#0066CC") // Blue color for water effect
+        // Color options - change this line to modify the color:
+
+        paint.color = Color.parseColor("#0066CC") // Original blue
+        // paint.color = Color.parseColor("#00CC99") // Cyan
+        // paint.color = Color.parseColor("#00CC00") // Green
+        // paint.color = Color.parseColor("#9900CC") // Purple
+        // paint.color = Color.parseColor("#FF6600") // Orange
+        // paint.color = Color.parseColor("#FF3399") // Pink
+        // paint.color = Color.parseColor("#3399FF") // Light blue
+
+        // Or use Color.rgb() method:
+        // paint.color = Color.rgb(51, 153, 255) // Light blue (RGB: 51, 153, 255)
+    }
+
+    fun setColor(color: Int) {
+        paint.color = color
+        invalidate()
+    }
+
+    fun setColorFromResource(colorResId: Int) {
+        paint.color = context.getColor(colorResId)
+        invalidate()
+    }
+
+    fun setHumidity(humidityPercent: Int) {
+        humidity = humidityPercent.coerceIn(0, 100).toFloat()
+        invalidate()
+    }
+
+    fun setHumidity(humidityPercent: Float) {
+        humidity = humidityPercent.coerceIn(0f, 100f)
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {

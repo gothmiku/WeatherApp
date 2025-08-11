@@ -55,6 +55,7 @@ dependencies {
 
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.runtime.saved.instance.state)
+    implementation(libs.androidx.lifecycle.viewmodel.android)
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
     ksp(libs.androidx.room.compiler)

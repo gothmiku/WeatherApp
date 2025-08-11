@@ -5,10 +5,10 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 class DateHandle(){
-    private val date = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0)
+    private val date = LocalDateTime.now().withHour(10).withMinute(0).withSecond(0)
 
     fun getDatePlusDay(days : Long) : Long{
-        val response = date.plusDays(days).atZone(ZoneId.systemDefault()).toEpochSecond()
+        val response = date.plusDays(days).atZone(ZoneId.of("UTC")).toEpochSecond()
         return response
     }
 
@@ -17,10 +17,10 @@ class DateHandle(){
     }
 
     fun toUnixTimestamp() : Long{
-        return date.atZone(ZoneId.systemDefault()).toEpochSecond()
+        return date.atZone(ZoneId.of("UTC")).toEpochSecond()
     }
 
     fun getUnixTimestampString() : String{
-        return date.atZone(ZoneId.systemDefault()).toEpochSecond().toString()
+        return date.atZone(ZoneId.of("UTC")).toEpochSecond().toString()
     }
 }

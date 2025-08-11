@@ -5,11 +5,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.MainActivity">
+    tools:context=".presentation.ui.MainActivity"
+    android:background="@color/myBackground">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
         android:id="@+id/forecastRecycleFragment">
 
     </FrameLayout>

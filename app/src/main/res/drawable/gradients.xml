@@ -7,5 +7,5 @@
         android:type="linear"
         android:startColor="@color/md_theme_primaryContainer_highContrast"
         android:endColor="@color/md_theme_primaryContainer_mediumContrast"
-        ></gradient>
+        />
 </shape>

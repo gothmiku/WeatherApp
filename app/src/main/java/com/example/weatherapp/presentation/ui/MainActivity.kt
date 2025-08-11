@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.example.weatherapp.data.model.Weather
+import com.example.weatherapp.presentation.ui.fragment.CurrentWeatherFragment
 import com.example.weatherapp.presentation.ui.fragment.HumidityFragment
 import com.example.weatherapp.presentation.ui.fragment.WeatherFragment
 import com.example.weatherapp.presentation.viewmodel.GPSViewModel
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 //            This places the frame layout with the fragment
             if (savedInstanceState == null) {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.forecastRecycleFragment, HumidityFragment())
+                    .replace(R.id.forecastRecycleFragment, CurrentWeatherFragment())
                     .commit()
             }
 
