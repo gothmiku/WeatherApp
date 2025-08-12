@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.data.model.WeatherIcons
 import com.example.weatherapp.data.model.WeatherInfo
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class WeatherAdapter(
@@ -25,6 +27,7 @@ class WeatherAdapter(
         val name: TextView = view.findViewById(R.id.weatherText)
         val desc: TextView = view.findViewById(R.id.weatherDescriptionText)
         val temp: TextView = view.findViewById(R.id.tempText)
+        val day: TextView = view.findViewById(R.id.dayText)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
@@ -37,10 +40,17 @@ class WeatherAdapter(
         val apiWeatherName = weatherList[position]
         val weatherType = WeatherIcons.fromApiDesc(apiWeatherName.weatherDescription)
 
+        val dayOfTheWeek = (apiWeatherName.date.toLong() * 1000L)
+        val sdf = SimpleDateFormat("EEE", Locale.ENGLISH)
+        val date = java.util.Date(dayOfTheWeek)
+        val dayOfWeek = sdf.format(date)
+
+
         holder.icon.setImageResource(weatherType.icon)
         holder.name.text = apiWeatherName.weather
         holder.desc.text = apiWeatherName.weatherDescription
         holder.temp.text = apiWeatherName.temp.toInt().toString()
+        holder.day.text = dayOfWeek
     }
 
     override fun getItemCount() = weatherList.size

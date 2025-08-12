@@ -28,30 +28,30 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="-28dp"
                     android:src="@drawable/cloud_skew"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/CurrentWeatherTitle"
+                    app:layout_constraintTop_toTopOf="@id/CurrentWeatherTitle"
                     app:tint="@color/md_theme_primary_mediumContrast" />
 
                 <com.example.weatherapp.presentation.shaders.SkewedTextView
                     android:id="@+id/CurrentWeatherTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_extrabold"
                     android:text="CLOUDY"
                     android:textColor="@color/md_theme_primary_mediumContrast"
                     android:textSize="30sp"
-                    app:layout_constraintStart_toEndOf="@id/CurrentWeatherIcon"
-                    app:layout_constraintTop_toTopOf="@id/CurrentWeatherIcon" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <com.example.weatherapp.presentation.shaders.SkewedTextView
                     android:id="@+id/CurrentWeatherDesc"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="-20dp"
                     android:alpha="0.8"
                     android:fontFamily="@font/poppins_medium"
@@ -66,13 +66,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="-6dp"
-                    android:layout_marginTop="-7dp"
+                    android:layout_marginTop="-33dp"
                     android:fontFamily="@font/poppins_extrabold"
                     android:text="36"
                     android:textColor="@color/md_theme_primary_mediumContrast"
                     android:textSize="75sp"
                     app:layout_constraintStart_toEndOf="@id/CurrentWeatherTitle"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/CurrentWeatherTitle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 

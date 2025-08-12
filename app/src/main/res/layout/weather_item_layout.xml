@@ -74,11 +74,27 @@
         app:layout_constraintStart_toStartOf="@id/weatherText"
         app:layout_constraintTop_toBottomOf="@id/weatherText" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_bold_italic"
+        app:layout_constraintTop_toTopOf="@id/weatherText"
+        android:layout_marginEnd="3dp"
+        android:text="Meow"
+        android:textColor="@color/md_theme_onPrimaryContainer"
+        android:alpha="0.5"
+        android:layout_marginTop="0dp"
+        android:textSize="15sp"
+        android:id="@+id/dayText"
+        />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="30dp" />
+        app:layout_constraintGuide_begin="30dp"
+        android:background="@color/md_theme_error"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

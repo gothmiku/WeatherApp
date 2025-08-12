@@ -1,6 +1,7 @@
 package com.example.weatherapp.presentation.viewmodel
 
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.model.Forecast
@@ -39,6 +40,11 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
 
     suspend fun deleteAllExcept(datesToKeep: List<String>) {
         repo.deleteAllExcept(datesToKeep)
+    }
+
+    @RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
+    suspend fun fillEmptyDayFields(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel) {
+        repo.fillEmptyDayFields(weatherViewModel,gpsViewModel)
     }
 
     suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse {

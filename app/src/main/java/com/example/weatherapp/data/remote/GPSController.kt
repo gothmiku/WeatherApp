@@ -6,15 +6,13 @@ import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.example.weatherapp.data.local.GPSDAO
 import com.example.weatherapp.data.model.Coordinates
+import com.example.weatherapp.util.DateHandle
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.time.Clock
 import java.time.Instant
-import java.time.ZoneId
 import javax.inject.Inject
-import com.example.weatherapp.util.DateHandle
 
 
 class GPSController @Inject constructor(context: Context, private val gpsDAO: GPSDAO) {
@@ -91,5 +89,9 @@ suspend fun insertLocation() {
             Log.e("GPS", "Failed to get location", e)
             null
         }
+    }
+
+    suspend fun getCityAndCountry(){
+
     }
 }

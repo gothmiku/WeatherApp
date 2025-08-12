@@ -5,47 +5,65 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.MainActivity"
-    android:background="@color/myBackground">
+    android:background="@color/myBackground"
+    tools:context=".presentation.ui.MainActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:nestedScrollingEnabled="true"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:scrollbars="none"
-        android:nestedScrollingEnabled="true">
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/background">
+            android:background="@drawable/background"
+            android:orientation="vertical">
+
             <FrameLayout
+                android:id="@+id/currentWeatherFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/currentWeatherFragment">
+                android:layout_height="wrap_content">
 
             </FrameLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/weatherForecastFragment"
-                    android:layout_weight="5"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_weight="3" />
+
+                <FrameLayout
+                    android:id="@+id/locationFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_weight="5" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:background="@color/md_theme_error"/>
+                    android:background="@color/md_theme_scrim"/>
+                <FrameLayout
+                    android:id="@+id/humidityFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"/>
+
             </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/humidityFragment" />
         </LinearLayout>
     </ScrollView>
 

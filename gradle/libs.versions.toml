@@ -26,6 +26,7 @@ recyclerview = "1.4.0"
 runtimeSavedInstanceState = "1.0.0-alpha11"
 lifecycleViewmodelAndroid = "2.9.2"
 uiGraphicsJvmstubs = "1.8.3"
+playServicesAds = "24.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +66,7 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-runtime-saved-instance-state = { group = "androidx.compose.runtime", name = "runtime-saved-instance-state", version.ref = "runtimeSavedInstanceState" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
 androidx-ui-graphics-jvmstubs = { group = "androidx.compose.ui", name = "ui-graphics-jvmstubs", version.ref = "uiGraphicsJvmstubs" }
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version = "2.57" }

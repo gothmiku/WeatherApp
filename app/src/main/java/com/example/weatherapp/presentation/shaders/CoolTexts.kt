@@ -9,7 +9,6 @@ import android.graphics.RadialGradient
 import android.graphics.Shader
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.compose.ui.graphics.LinearGradient
 
 class SkewedTextView @JvmOverloads constructor(
     context: Context,
@@ -46,6 +45,8 @@ class SkewedTextView @JvmOverloads constructor(
         canvas?.restore()
     }
 }
+
+
 
 // 1. Glowing Temperature Text
 class GlowingTemperatureView @JvmOverloads constructor(
