@@ -1,12 +1,19 @@
 package com.example.weatherapp.data.repo
 
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import com.example.weatherapp.data.local.WeatherInfoDAO
 import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.model.WeatherResponse
 import com.example.weatherapp.data.remote.WeatherAPI
+import com.example.weatherapp.presentation.ui.date
+import com.example.weatherapp.presentation.viewmodel.GPSViewModel
+import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -53,7 +60,9 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             clouds=response.daily[dayFromNow].clouds,
             visibility=response.daily[dayFromNow].visibility,
             wind_speed=response.daily[dayFromNow].windSpeed,
-            date=response.daily[dayFromNow].dt.toString()
+            date=response.daily[dayFromNow].dt.toString(),
+            weather = response.daily[dayFromNow].weather[0].main,
+            weatherDescription = response.daily[dayFromNow].weather[0].description
         )
     }
 
@@ -67,8 +76,61 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             clouds=response.current.clouds,
             visibility=response.current.visibility,
             wind_speed=response.current.windSpeed,
-            date=response.current.dt.toString()
+            date=response.current.dt.toString(),
+            weather = response.current.weather[0].main,
+            weatherDescription = response.current.weather[0].description
         )
+    }
+
+    @RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
+    fun fillEmptyDayFields(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel) {
+        val listToKeep = mutableListOf<String>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val coordinates = gpsViewModel.getLastLocation()
+            if (coordinates == null) {
+                Log.e("GPS", "Failed to get location - location is null")
+                return@launch
+            }
+
+            gpsViewModel.insertGPSInfo(coordinates)
+            val gpsInfo = gpsViewModel.getLatestsGPSInfo()
+
+            if(weatherViewModel.getOldestWeatherInfo()?.date == date.getDate().toString()){ //It checks if there are any irrelevant rows and deletes them. It then inserts the latest day
+                weatherViewModel.deleteOldestWeatherInfo()
+                val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
+                val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,7)
+                weatherViewModel.insertWeatherInfo(input)
+            }else{
+                Log.d("Database","Day is up to date")
+            }
+            Log.d("Database","Logging all the dates in the database...")
+            for (x in 0..7) {
+                val dateString = date.getDatePlusDay(x.toLong()).toString()
+                if (weatherViewModel.getWeatherInfoByDate(dateString) != null) {
+                    listToKeep.add(dateString) //Making a list of dates that already exist in the database and is within the first 7 days (8 If you count today)
+                }
+            }
+            Log.d("Database","Deleting all the dates that are not in the date list...")
+            weatherViewModel.deleteAllExcept(listToKeep) // Deletes everything that is not in the date list
+            Log.d("Database","Deleted successfully")
+            if(weatherViewModel.getWeatherInfoCount()<=8){
+                val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
+                Log.d("API", "API call successful")
+                Log.d("API","Response is:\n${weather.toString()}")
+                for(x in 0..7){
+                    val expectedDate = date.getDatePlusDay(x.toLong()).toString()
+                    if (weatherViewModel.getWeatherInfoByDate(expectedDate) == null) {
+                        val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather, x)
+                        Log.d("Insertion", "Input data is the class of ${input.javaClass}" +
+                                "\n and the data date is ${input.date}" +
+                                "\n and the data temp is ${input.temp}")
+                        weatherViewModel.insertWeatherInfo(input)
+                    }
+                }
+            }else{
+                Log.d("Database","No missing entries.Database is up to date")
+            }
+        }
     }
 
 
@@ -89,8 +151,16 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
         return dao.getAllWeatherInfo()
     }
 
+    suspend fun deleteAllExcept(datesToKeep: List<String>) {
+        dao.deleteAllExcept(datesToKeep)
+    }
+
     suspend fun getLatestWeatherInfo(): WeatherInfo? {
         return dao.getLatestWeatherInfo()
+    }
+
+    suspend fun getOldestWeatherInfo(): WeatherInfo? {
+        return dao.getOldestWeatherInfo()
     }
 
     suspend fun deleteOldestWeatherInfo(){

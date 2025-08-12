@@ -2,13 +2,19 @@ package com.example.weatherapp.presentation.ui
 
 import android.util.Log
 import androidx.annotation.RequiresPermission
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import com.example.weatherapp.R
 import com.example.weatherapp.data.model.WeatherInfo
+import com.example.weatherapp.presentation.ui.fragment.WeatherForecastFragment
 import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import com.example.weatherapp.presentation.viewmodel.GPSViewModel
+import com.example.weatherapp.util.DateHandle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+
+val date = DateHandle()
 
 // Success
 fun logDatabase(weatherViewModel: WeatherAppViewModel) {
@@ -35,6 +41,8 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
                     clouds = 20,
                     uvi = 7.3f,
                     visibility = 10000,
+                    weather = "Cloudy",
+                    weatherDescription = "Partial Cloud"
 
                     ),
                 WeatherInfo(
@@ -47,6 +55,8 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
                     clouds = 50,
                     uvi = 5.8f,
                     visibility = 9500,
+                    weather = "Rainy",
+                    weatherDescription = "Cloudy with a chance of rain"
 
                     ),
                 WeatherInfo(
@@ -59,6 +69,8 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
                     clouds = 90,
                     uvi = 3.5f,
                     visibility = 8000,
+                    weather = "Sunny",
+                    weatherDescription = "Meow"
                 )
             )
 
@@ -144,7 +156,7 @@ fun apiForecastTest(gpsViewModel : GPSViewModel,weatherViewModel: WeatherAppView
             val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
             Log.d("API", "API test success")
             Log.d("API","Response is:\n${weather.toString()}")
-            val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,1)
+            val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,3)
             Log.d("Insertion","Input data is the class of ${input.javaClass}" +
                     "\n and the data date is ${input.date}" +
                     "\n and the data temp is ${input.temp}")
@@ -155,5 +167,59 @@ fun apiForecastTest(gpsViewModel : GPSViewModel,weatherViewModel: WeatherAppView
         }
     }
 }
+
+@RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
+fun checkAndFillDB(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel) {
+    val listToKeep = mutableListOf<String>()
+    CoroutineScope(Dispatchers.IO).launch {
+        val coordinates = gpsViewModel.getLastLocation()
+        if (coordinates == null) {
+            Log.e("GPS", "Failed to get location - location is null")
+            return@launch
+        }
+
+        gpsViewModel.insertGPSInfo(coordinates)
+        val gpsInfo = gpsViewModel.getLatestsGPSInfo()
+
+        if(weatherViewModel.getOldestWeatherInfo()?.date == date.getDate().toString()){ //It checks if there are any irrelevant rows and deletes them. It then inserts the latest day
+            weatherViewModel.deleteOldestWeatherInfo()
+            val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
+            val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather,7)
+            weatherViewModel.insertWeatherInfo(input)
+        }else{
+            Log.d("Database","Day is up to date")
+        }
+        Log.d("Database","Logging all the dates in the database...")
+        for (x in 0..7) {
+            val dateString = date.getDatePlusDay(x.toLong()).toString()
+            if (weatherViewModel.getWeatherInfoByDate(dateString) != null) {
+                listToKeep.add(dateString) //Making a list of dates that already exist in the database and is within the first 7 days (8 If you count today)
+            }
+        }
+        Log.d("Database","Deleting all the dates that are not in the date list...")
+        weatherViewModel.deleteAllExcept(listToKeep) // Deletes everything that is not in the date list
+        Log.d("Database","Deleted successfully")
+        if(weatherViewModel.getWeatherInfoCount()<=8){
+            val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
+            Log.d("API", "API call successful")
+            Log.d("API","Response is:\n${weather.toString()}")
+            for(x in 0..7){
+                val expectedDate = date.getDatePlusDay(x.toLong()).toString()
+                if (weatherViewModel.getWeatherInfoByDate(expectedDate) == null) {
+                    val input = weatherViewModel.convertForecastResponseToWeatherInfo(weather, x)
+                    Log.d("Insertion", "Input data is the class of ${input.javaClass}" +
+                            "\n and the data date is ${input.date}" +
+                            "\n and the data temp is ${input.temp}")
+                    weatherViewModel.insertWeatherInfo(input)
+                }
+            }
+        }else{
+            Log.d("Database","No missing entries.Database is up to date")
+        }
+    }
+
+}
+
+
 
 //TODO Check DB if updates are needed. If so, call API and store it there. Design the pattern of when to check DB and when to call API. 😂😂

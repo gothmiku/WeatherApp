@@ -10,26 +10,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.BuildConfig
 import com.example.weatherapp.R
-import com.example.weatherapp.data.model.WeatherInfo
-import com.example.weatherapp.data.remote.GPSController
-import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
-import com.example.weatherapp.data.model.Weather
+import com.example.weatherapp.presentation.ui.fragment.CurrentWeatherFragment
+import com.example.weatherapp.presentation.ui.fragment.HumidityFragment
+import com.example.weatherapp.presentation.ui.fragment.LocationFragment
+import com.example.weatherapp.presentation.ui.fragment.WeatherForecastFragment
 import com.example.weatherapp.presentation.viewmodel.GPSViewModel
+import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
+import com.example.weatherapp.util.DateHandle
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    //TODO Check if internet is available before checking for newer data
 
     private lateinit var weatherViewModel: WeatherAppViewModel
     private lateinit var gpsViewModel: GPSViewModel
@@ -48,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainAct", "Viewmodel initialized")
             gpsViewModel = ViewModelProvider(this)[GPSViewModel::class.java]
             Log.d("MainAct", "GPSController initialized")
+            val todaysDate = DateHandle()
 
 
             // Set up window insets
@@ -65,11 +65,40 @@ class MainActivity : AppCompatActivity() {
             // Check and request location permission
             checkLocationPermission()
 
-            // Inserting sample weather data
+            CoroutineScope(Dispatchers.IO).launch {
+                if(todaysDate.getUnixTimestampString()==weatherViewModel.getOldestWeatherInfo()?.date){
+                    Log.d("Database","Database is up to date")
+                }else{
+                    weatherViewModel.fillEmptyDayFields(weatherViewModel,gpsViewModel)
+                    Log.d("Database","Database is not up to date")
+                }
+            }
+
+
+            // Debugging and Test functions
+
             //logDatabase(weatherViewModel) // To test stuff without api calls
             //apiTest(weatherViewModel,gpsViewModel)
+            //apiForecastTest(gpsViewModel,weatherViewModel)
+            //checkAndFillDB(weatherViewModel,gpsViewModel)
 
-            apiForecastTest(gpsViewModel,weatherViewModel)
+
+//            This places the frame layout with the fragment
+            if (savedInstanceState == null) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.currentWeatherFragment, CurrentWeatherFragment())
+                    .commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.humidityFragment, HumidityFragment())
+                    .commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.weatherForecastFragment, WeatherForecastFragment())
+                    .commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.locationFragment, LocationFragment())
+                    .commit()
+            }
+
 
         }catch(e:Exception){
             Log.e("MainAct","Error is on onCreate",e)

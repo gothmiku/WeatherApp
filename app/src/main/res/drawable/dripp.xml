@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- main droplet -->
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M256 20 C330 140 410 270 410 360 C410 440 340 492 256 492 C172 492 102 440 102 360 C102 270 182 140 256 20 Z"/>
+
+
+</vector>

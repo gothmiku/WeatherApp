@@ -1,11 +1,9 @@
 package com.example.weatherapp.presentation.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.annotation.RequiresPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.local.AppDatabase
 import com.example.weatherapp.data.model.Forecast
 import com.example.weatherapp.data.model.WeatherInfo
 import com.example.weatherapp.data.model.WeatherResponse
@@ -14,18 +12,18 @@ import com.example.weatherapp.data.repo.WeatherRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
 import javax.inject.Inject
+import com.example.weatherapp.util.DateHandle
 
 @HiltViewModel
 class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : ViewModel() {
     val allWeatherInfos: Flow<List<WeatherInfo>> = repo.allWeatherInfos
+    val date = DateHandle()
+
 
     fun insertWeatherInfo(weatherInfo: WeatherInfo) { // This is going to be used either hard coded or converted from API data
         viewModelScope.launch(Dispatchers.IO) {
-            if (repo.getWeatherInfoByDate(LocalDate.now(ZoneId.systemDefault()).atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString()) == weatherInfo) {
+            if (repo.getWeatherInfoByDate(date.getUnixTimestampString()) == weatherInfo) {
                 Log.d("ViewModel","It already exists")
             }else{
                 repo.insertWeatherInfo(weatherInfo)
@@ -34,6 +32,20 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
     }
 
 
+
+
+    suspend fun getWeatherInfoByDate(date: String): WeatherInfo? {
+        return repo.getWeatherInfoByDate(date)
+    }
+
+    suspend fun deleteAllExcept(datesToKeep: List<String>) {
+        repo.deleteAllExcept(datesToKeep)
+    }
+
+    @RequiresPermission(allOf = [android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION])
+    suspend fun fillEmptyDayFields(weatherViewModel: WeatherAppViewModel,gpsViewModel: GPSViewModel) {
+        repo.fillEmptyDayFields(weatherViewModel,gpsViewModel)
+    }
 
     suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse {
         return repo.getTodayWeather(latitude, longitude)
@@ -64,6 +76,14 @@ class WeatherAppViewModel @Inject constructor(private val repo: WeatherRepo) : V
 
     suspend fun getAllWeatherInfo(): List<WeatherInfo> {
         return repo.getAllWeatherInfo()
+    }
+
+    suspend fun getOldestWeatherInfo(): WeatherInfo? {
+        return repo.getOldestWeatherInfo()
+    }
+
+    suspend fun deleteOldestWeatherInfo() {
+        repo.deleteOldestWeatherInfo()
     }
 
     suspend fun getLatestWeatherInfo(): WeatherInfo? {
