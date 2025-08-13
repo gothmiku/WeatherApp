@@ -70,9 +70,6 @@ class HumidityFragment : Fragment(R.layout.humidity_layout) {
                 "Date for humidity check ${dateHandle.getUnixTimestampString()}"
             )
         }
-        val textView = view.findViewById<TextView>(R.id.humidityText)
-        textView.setLayerType(LAYER_TYPE_SOFTWARE, null)
-        applyNegativeColorFilter(textView)
 
     }
 }

@@ -38,13 +38,13 @@
                     android:id="@+id/weatherForecastFragment"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:layout_weight="3" />
+                    android:layout_weight="5" />
 
                 <FrameLayout
                     android:id="@+id/locationFragment"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:layout_weight="5" />
+                    android:layout_weight="6" />
 
             </LinearLayout>
             <LinearLayout
@@ -52,14 +52,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <FrameLayout
+                    android:id="@+id/windFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:background="@color/md_theme_scrim"/>
+                    android:layout_height="350dp"
+                    android:layout_weight="5" />
                 <FrameLayout
                     android:id="@+id/humidityFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="350dp"
                     android:layout_weight="3"/>
 
             </LinearLayout>

@@ -24,6 +24,18 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
 
     val allWeatherInfos: Flow<List<WeatherInfo>> = dao.getAllWeatherInfoFlow()
 
+    fun haversine(lat : Float, lon : Float, secondLat : Float, secondLon : Float): Double {
+        val earthRadiusKm: Double = 6372.8
+        val dLat = Math.toRadians((secondLat - lat).toDouble());
+        val dLon = Math.toRadians((secondLon - lon).toDouble());
+        val originLat = Math.toRadians(lat.toDouble());
+        val destinationLat = Math.toRadians(secondLat.toDouble());
+
+        val a = Math.pow(Math.sin(dLat / 2), 2.toDouble()) + Math.pow(Math.sin(dLon / 2), 2.toDouble()) * Math.cos(originLat) * Math.cos(destinationLat);
+        val c = 2 * Math.asin(Math.sqrt(a));
+        return earthRadiusKm * c;
+    }
+
     suspend fun getTodayWeather(latitude: Float, longitude: Float): WeatherResponse{
         val response = api.getToday(latitude, longitude)
         if (response.isSuccessful) {
@@ -60,6 +72,7 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             clouds=response.daily[dayFromNow].clouds,
             visibility=response.daily[dayFromNow].visibility,
             wind_speed=response.daily[dayFromNow].windSpeed,
+            wind_deg = response.daily[dayFromNow].windDeg,
             date=response.daily[dayFromNow].dt.toString(),
             weather = response.daily[dayFromNow].weather[0].main,
             weatherDescription = response.daily[dayFromNow].weather[0].description
@@ -76,6 +89,7 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             clouds=response.current.clouds,
             visibility=response.current.visibility,
             wind_speed=response.current.windSpeed,
+            wind_deg = response.current.windDeg,
             date=response.current.dt.toString(),
             weather = response.current.weather[0].main,
             weatherDescription = response.current.weather[0].description
@@ -113,7 +127,7 @@ class WeatherRepo @Inject constructor(private val dao: WeatherInfoDAO, private v
             Log.d("Database","Deleting all the dates that are not in the date list...")
             weatherViewModel.deleteAllExcept(listToKeep) // Deletes everything that is not in the date list
             Log.d("Database","Deleted successfully")
-            if(weatherViewModel.getWeatherInfoCount()<=8){
+            if(weatherViewModel.getWeatherInfoCount()<=8 || haversine(coordinates.lat,coordinates.lon,gpsInfo!!.lat,gpsInfo.lon)>80){
                 val weather = weatherViewModel.getForecastWeather(gpsInfo!!.lat, gpsInfo.lon)
                 Log.d("API", "API call successful")
                 Log.d("API","Response is:\n${weather.toString()}")

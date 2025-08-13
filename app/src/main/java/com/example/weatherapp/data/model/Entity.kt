@@ -1,5 +1,6 @@
 package com.example.weatherapp.data.model
 
+import android.R
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -17,6 +18,7 @@ data class WeatherInfo(
     val feels_like: Float,
     val humidity: Int,
     val wind_speed: Float,
+    val wind_deg : Int,
     val pressure: Int,
     val clouds : Int,
     val uvi : Float,
@@ -30,4 +32,14 @@ data class Coordinates(
     @PrimaryKey val date: String,
     val lat: Float,
     val lon: Float,
+)
+
+@Entity(tableName = "AddressResponseCache")
+data class AddressResponseCache(
+    @PrimaryKey (autoGenerate = true) val id : Int = 0,
+    val country: String,
+    val city: String,
+    val countryCode: String,
+    val lat : Float,
+    val lon : Float
 )

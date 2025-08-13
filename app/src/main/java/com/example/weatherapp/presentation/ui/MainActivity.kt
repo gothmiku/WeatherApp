@@ -14,10 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.BuildConfig
 import com.example.weatherapp.R
+import com.example.weatherapp.data.repo.CacheRepo
 import com.example.weatherapp.presentation.ui.fragment.CurrentWeatherFragment
 import com.example.weatherapp.presentation.ui.fragment.HumidityFragment
 import com.example.weatherapp.presentation.ui.fragment.LocationFragment
 import com.example.weatherapp.presentation.ui.fragment.WeatherForecastFragment
+import com.example.weatherapp.presentation.ui.fragment.WindFragment
 import com.example.weatherapp.presentation.viewmodel.GPSViewModel
 import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
 import com.example.weatherapp.util.DateHandle
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var weatherViewModel: WeatherAppViewModel
     private lateinit var gpsViewModel: GPSViewModel
 
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             weatherViewModel = ViewModelProvider(this)[WeatherAppViewModel::class.java]
             Log.d("MainAct", "Viewmodel initialized")
             gpsViewModel = ViewModelProvider(this)[GPSViewModel::class.java]
+
             Log.d("MainAct", "GPSController initialized")
             val todaysDate = DateHandle()
 
@@ -96,6 +100,9 @@ class MainActivity : AppCompatActivity() {
                     .commit()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.locationFragment, LocationFragment())
+                    .commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.windFragment, WindFragment())
                     .commit()
             }
 

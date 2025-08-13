@@ -91,7 +91,15 @@ suspend fun insertLocation() {
         }
     }
 
-    suspend fun getCityAndCountry(){
+    fun haversine(lat : Float, lon : Float, secondLat : Float, secondLon : Float): Double {
+        val earthRadiusKm: Double = 6372.8
+        val dLat = Math.toRadians((secondLat - lat).toDouble());
+        val dLon = Math.toRadians((secondLon - lon).toDouble());
+        val originLat = Math.toRadians(lat.toDouble());
+        val destinationLat = Math.toRadians(secondLat.toDouble());
 
+        val a = Math.pow(Math.sin(dLat / 2), 2.toDouble()) + Math.pow(Math.sin(dLon / 2), 2.toDouble()) * Math.cos(originLat) * Math.cos(destinationLat);
+        val c = 2 * Math.asin(Math.sqrt(a));
+        return earthRadiusKm * c;
     }
 }

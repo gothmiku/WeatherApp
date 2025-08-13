@@ -8,7 +8,7 @@ data class AddressResponse(
 )
 
 data class Address(
-    @SerializedName("city")
+    @SerializedName("town")
     val city: String,
     @SerializedName("country")
     val country: String,

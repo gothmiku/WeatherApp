@@ -1,6 +1,10 @@
 package com.example.weatherapp.dependencyinjection
 
+import com.example.weatherapp.data.local.AddressCacheDAO
+import com.example.weatherapp.data.local.AppDatabase
+import com.example.weatherapp.data.remote.GPSController
 import com.example.weatherapp.data.remote.OpenMapAPI
+import com.example.weatherapp.data.repo.CacheRepo
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -16,12 +20,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object OpenMapModule {
+    @OpenMapRetrofit
     @Singleton
     @Provides
-    fun provideRetrofit(okhttpClient: OkHttpClient, converterFactory: GsonConverterFactory) : Retrofit {
+    fun provideRetrofit(@OpenMapOkHttp okhttpClient: OkHttpClient,@OpenMapGSON converterFactory: GsonConverterFactory) : Retrofit {
         return Retrofit.Builder().baseUrl("https://nominatim.openstreetmap.org/").client(okhttpClient).addConverterFactory(converterFactory).build()
     }
-
+    @OpenMapOkHttp
     @Singleton
     @Provides
     fun provideOKHTTP() : OkHttpClient {
@@ -34,7 +39,7 @@ object OpenMapModule {
             .retryOnConnectionFailure(true)
             .build()
     }
-
+    @OpenMapGSON
     @Singleton
     @Provides
     fun provideGSON() : GsonConverterFactory {
@@ -43,7 +48,21 @@ object OpenMapModule {
 
     @Singleton
     @Provides
-    fun provideOpenMapAPI(retrofit: Retrofit) : OpenMapAPI {
+    fun provideOpenMapAPI(@OpenMapRetrofit retrofit: Retrofit) : OpenMapAPI {
         return retrofit.create(OpenMapAPI::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideAddressCacheDAO(appDatabase: AppDatabase) : AddressCacheDAO {
+        return appDatabase.addressCacheDAO()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCacheRepo(addressCacheDAO: AddressCacheDAO,gps : GPSController) : CacheRepo {
+        return CacheRepo(addressCacheDAO,gps)
+    }
+
+
 }

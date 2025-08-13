@@ -8,20 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:paddingTop="10dp">
+        android:padding="10dp">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="5dp"
+            app:cardCornerRadius="25dp"
             >
-
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/current_weather_background"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:padding="20dp">
+                android:padding="5dp">
 
                 <ImageView
                     android:id="@+id/CurrentWeatherIcon"
@@ -32,7 +35,7 @@
                     android:src="@drawable/cloud_skew"
                     app:layout_constraintEnd_toStartOf="@id/CurrentWeatherTitle"
                     app:layout_constraintTop_toTopOf="@id/CurrentWeatherTitle"
-                    app:tint="@color/md_theme_primary_mediumContrast" />
+                    app:tint="@color/md_theme_onPrimaryContainer_mediumContrast" />
 
                 <com.example.weatherapp.presentation.shaders.SkewedTextView
                     android:id="@+id/CurrentWeatherTitle"
@@ -40,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_extrabold"
                     android:text="CLOUDY"
-                    android:textColor="@color/md_theme_primary_mediumContrast"
+                    android:textColor="@color/md_theme_onPrimaryContainer_mediumContrast"
                     android:textSize="30sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -49,17 +52,22 @@
 
                 <com.example.weatherapp.presentation.shaders.SkewedTextView
                     android:id="@+id/CurrentWeatherDesc"
-                    android:layout_width="135dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="-20dp"
+                    android:layout_marginEnd="5dp"
                     android:alpha="0.8"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
                     android:fontFamily="@font/poppins_medium"
+                    android:focusable="true"
                     android:singleLine="true"
                     android:text="partially cloudly"
-                    android:textColor="@color/md_theme_primary_mediumContrast"
+                    android:textColor="@color/md_theme_onPrimaryContainer_mediumContrast"
                     app:layout_constraintStart_toEndOf="@id/CurrentWeatherIcon"
-                    app:layout_constraintTop_toBottomOf="@id/CurrentWeatherTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/CurrentWeatherTitle"
+                    app:layout_constraintEnd_toEndOf="@id/CurrentWeatherTitle"/>
 
                 <com.example.weatherapp.presentation.shaders.SkewedTextView
                     android:id="@+id/CurrentWeatherTemp"
@@ -69,12 +77,12 @@
                     android:layout_marginTop="-33dp"
                     android:fontFamily="@font/poppins_extrabold"
                     android:text="36"
-                    android:textColor="@color/md_theme_primary_mediumContrast"
+                    android:textColor="@color/md_theme_onPrimaryContainer_mediumContrast"
                     android:textSize="75sp"
                     app:layout_constraintStart_toEndOf="@id/CurrentWeatherTitle"
                     app:layout_constraintTop_toTopOf="@id/CurrentWeatherTitle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </FrameLayout>
 
