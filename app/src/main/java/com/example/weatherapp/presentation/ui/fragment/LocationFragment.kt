@@ -40,7 +40,7 @@ class LocationFragment : Fragment(R.layout.coordinates_layout){
                 Log.d("Caching","Cache exists!")
                 if(cacheRepo.haversine(cacheRepo.getLatestAddressCache()?.lat?: 30f
                 ,cacheRepo.getLatestAddressCache()?.lon ?: 30f,coordinate?.lat ?: 30f,coordinate?.lon?: 30f)>=5f){
-                    Log.d("Caching","Distance between cache and current coordinates" +
+                    Log.d("Caching","Distance between cache and current coordinates " +
                             "${cacheRepo.haversine(cacheRepo.getLatestAddressCache()?.lat?: 30f
                                 ,cacheRepo.getLatestAddressCache()?.lon ?: 30f,coordinate?.lat ?: 30f,coordinate?.lon?: 30f)} " + " km")
                     cacheRepo.deleteAllAddressCaches()

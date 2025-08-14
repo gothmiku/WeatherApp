@@ -25,3 +25,15 @@ annotation class OpenMapGSON
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class WeatherGSON
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class NewsGSON
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class NewsRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class NewsOkHttp

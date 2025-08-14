@@ -45,5 +45,13 @@ class GPSViewModel @Inject constructor(private val repo: GPSRepo) : ViewModel() 
         return repo.getLastLocation()
     }
 
+    suspend fun getGPSInfoCount(): Int {
+        return repo.getGPSInfoCount()
+    }
+
+    suspend fun deleteAll(){
+        repo.deleteAll()
+    }
+
 
 }

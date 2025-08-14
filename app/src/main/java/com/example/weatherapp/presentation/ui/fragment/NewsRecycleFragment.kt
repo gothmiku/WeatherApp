@@ -18,43 +18,45 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.weatherapp.presentation.adapter.NewsAdapter
 import com.example.weatherapp.presentation.anims.ScrollBounceEffect
+import com.example.weatherapp.presentation.viewmodel.NewsViewModel
 
 
 @AndroidEntryPoint
-class WeatherForecastFragment : Fragment(R.layout.location_layout) {
+class NewsRecycleFragment : Fragment(R.layout.news_layout) {
 
-    private lateinit var viewModel: WeatherAppViewModel
-    private lateinit var adapter: WeatherAdapter
+    private lateinit var viewModel: NewsViewModel
+    private lateinit var adapter: NewsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[WeatherAppViewModel::class.java]
+        viewModel = ViewModelProvider(this)[NewsViewModel::class.java]
 
         setupRecyclerView(view)
-        observeWeatherData()
+        observeNewsData()
     }
 
     private fun setupRecyclerView(view: View) {
-        adapter = WeatherAdapter(emptyList())
-        val recyclerView = view.findViewById<RecyclerView>(R.id.weatherRecyclerView)
+        adapter = NewsAdapter(emptyList())
+        val recyclerView = view.findViewById<RecyclerView>(R.id.newsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.edgeEffectFactory = ScrollBounceEffect()
     }
 
-    private fun observeWeatherData() {
+    private fun observeNewsData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.allWeatherInfos.collect { weatherList ->
-                    val filteredList = if (weatherList.isNotEmpty()) {
-                        weatherList.drop(1) // Drop the first item
-                    }else{
-                        weatherList
-                    }
-                    adapter.updateData(filteredList)
-                }
+            try {
+                val newsResponse = viewModel.getNews().articles
+                Log.d("News","Successfully fetched news")
+                Log.d("News","Filtering out null news...")
+                val filteredList = newsResponse.filter { it.title != null && it.description != null && it.urlToImage != null && it.url != null }
+                adapter.updateData(newsResponse)
+                Log.d("News","successfully updated data")
+            } catch (e: Exception) {
+                Log.e("News", "Error fetching news: ${e.message}")
             }
         }
     }
