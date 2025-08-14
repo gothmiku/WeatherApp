@@ -9,13 +9,16 @@
     tools:context=".presentation.ui.MainActivity">
 
     <ScrollView
+        android:id="@+id/mainScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
         android:nestedScrollingEnabled="true"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,13 +41,13 @@
                     android:id="@+id/weatherForecastFragment"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:layout_weight="3" />
+                    android:layout_weight="5" />
 
                 <FrameLayout
                     android:id="@+id/locationFragment"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:layout_weight="5" />
+                    android:layout_weight="6" />
 
             </LinearLayout>
             <LinearLayout
@@ -52,17 +55,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <FrameLayout
+                    android:id="@+id/windFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:background="@color/md_theme_scrim"/>
+                    android:layout_height="350dp"
+                    android:layout_weight="5" />
                 <FrameLayout
                     android:id="@+id/humidityFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="350dp"
                     android:layout_weight="3"/>
 
             </LinearLayout>
+        <FrameLayout
+            android:id="@+id/newsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            />
 
         </LinearLayout>
     </ScrollView>

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.ScrollView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
@@ -14,10 +15,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.BuildConfig
 import com.example.weatherapp.R
+import com.example.weatherapp.data.repo.CacheRepo
 import com.example.weatherapp.presentation.ui.fragment.CurrentWeatherFragment
 import com.example.weatherapp.presentation.ui.fragment.HumidityFragment
 import com.example.weatherapp.presentation.ui.fragment.LocationFragment
+import com.example.weatherapp.presentation.ui.fragment.NewsRecycleFragment
 import com.example.weatherapp.presentation.ui.fragment.WeatherForecastFragment
+import com.example.weatherapp.presentation.ui.fragment.WindFragment
 import com.example.weatherapp.presentation.viewmodel.GPSViewModel
 import com.example.weatherapp.presentation.viewmodel.WeatherAppViewModel
 import com.example.weatherapp.util.DateHandle
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var weatherViewModel: WeatherAppViewModel
     private lateinit var gpsViewModel: GPSViewModel
 
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
@@ -46,6 +51,7 @@ class MainActivity : AppCompatActivity() {
             weatherViewModel = ViewModelProvider(this)[WeatherAppViewModel::class.java]
             Log.d("MainAct", "Viewmodel initialized")
             gpsViewModel = ViewModelProvider(this)[GPSViewModel::class.java]
+
             Log.d("MainAct", "GPSController initialized")
             val todaysDate = DateHandle()
 
@@ -66,7 +72,18 @@ class MainActivity : AppCompatActivity() {
             checkLocationPermission()
 
             CoroutineScope(Dispatchers.IO).launch {
+                if(gpsViewModel.getGPSInfoCount()>5){
+                    Log.d("Database","GPS database is full. Wiping database")
+                    gpsViewModel.deleteAll()
+                }
+
                 if(todaysDate.getUnixTimestampString()==weatherViewModel.getOldestWeatherInfo()?.date){
+                    val imStalkingYouBro = gpsViewModel.getLastLocation()
+                    if(imStalkingYouBro==null){
+                        Log.e("GPS","Failed to get location - location is null")
+                        return@launch
+                    }
+                    gpsViewModel.insertGPSInfo(imStalkingYouBro)
                     Log.d("Database","Database is up to date")
                 }else{
                     weatherViewModel.fillEmptyDayFields(weatherViewModel,gpsViewModel)
@@ -82,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             //apiForecastTest(gpsViewModel,weatherViewModel)
             //checkAndFillDB(weatherViewModel,gpsViewModel)
 
+            //TODO Add glide and add the news api. Make the fragment to display the news as well.
 
 //            This places the frame layout with the fragment
             if (savedInstanceState == null) {
@@ -97,7 +115,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.locationFragment, LocationFragment())
                     .commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.windFragment, WindFragment())
+                    .commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.newsFragment, NewsRecycleFragment())
+                    .commit()
             }
+            val mainScroll = findViewById<ScrollView>(R.id.mainScroll)
+
 
 
         }catch(e:Exception){

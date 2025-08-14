@@ -51,6 +51,7 @@ class CurrentWeatherFragment : Fragment(R.layout.current_weather_layout){
                 weatherTemp.invalidate()
             }
         }
+        weatherDesc.isSelected = true
 
 
 

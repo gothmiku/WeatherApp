@@ -33,6 +33,10 @@ class GPSRepo @Inject constructor(private val gpsDAO: GPSDAO,private val control
         return gpsDAO.latestGPSInfo()
     }
 
+    suspend fun getGPSInfoCount(): Int {
+        return gpsDAO.getGPSInfoCount()
+    }
+
     suspend fun deleteAll(){
         gpsDAO.deleteAll()
     }

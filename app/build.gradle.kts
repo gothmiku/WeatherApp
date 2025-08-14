@@ -19,6 +19,7 @@ android {
         localProperties.load(FileInputStream(localPropertiesFile))
 
         buildConfigField("String", "API_KEY", localProperties.getProperty("API_KEY"))
+        buildConfigField("String", "NEWS_KEY", localProperties.getProperty("NEWS_KEY"))
 
 
         android.buildFeatures.buildConfig = true
@@ -110,4 +111,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
     implementation("com.google.android.material:material:1.12.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.browser:browser:1.9.0")
 }

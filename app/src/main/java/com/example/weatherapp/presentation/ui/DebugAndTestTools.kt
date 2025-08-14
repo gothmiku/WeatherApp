@@ -42,7 +42,8 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
                     uvi = 7.3f,
                     visibility = 10000,
                     weather = "Cloudy",
-                    weatherDescription = "Partial Cloud"
+                    weatherDescription = "Partial Cloud",
+                    wind_deg = 61
 
                     ),
                 WeatherInfo(
@@ -56,8 +57,8 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
                     uvi = 5.8f,
                     visibility = 9500,
                     weather = "Rainy",
-                    weatherDescription = "Cloudy with a chance of rain"
-
+                    weatherDescription = "Cloudy with a chance of rain",
+                    wind_deg = 61
                     ),
                 WeatherInfo(
                     date = LocalDateTime.now().toString(),
@@ -70,7 +71,8 @@ fun logDatabase(weatherViewModel: WeatherAppViewModel) {
                     uvi = 3.5f,
                     visibility = 8000,
                     weather = "Sunny",
-                    weatherDescription = "Meow"
+                    weatherDescription = "Meow",
+                    wind_deg = 61
                 )
             )
 

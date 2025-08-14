@@ -29,4 +29,7 @@ interface GPSDAO{
 
     @Query("SELECT * FROM Coordinates WHERE date = :date")
     suspend fun getGPSInfoByDate(date: String): Coordinates?
+
+    @Query("SELECT COUNT(*) FROM Coordinates")
+    suspend fun getGPSInfoCount(): Int
 }
