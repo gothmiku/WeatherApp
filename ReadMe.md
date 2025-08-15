@@ -3,6 +3,7 @@
 ### Status : Finished
 
 ![Meow](https://github.com/gothmiku/WeatherApp/blob/master/light-night-preview.gif)
+
 *light mode & dark mode*
 
 ### Quick Introduction
@@ -16,10 +17,11 @@ This is one of my projects where I try to learn Kotlin and Android Studio. On th
 * The weather API is not giving accurate data.
 
 ![Cool Animations](https://github.com/gothmiku/WeatherApp/blob/master/animations-demo.gif)
+
 *cool animations*
 
 ### Setup
-Before compiling and building the app, you need to have an account and a valid API key from [OpenWeather.com](https://openweathermap.org/api). You also need and API key from [OpenNews.org](https://newsapi.org/). 
+Before compiling and building the app, you need to have an account and a valid API key from [OpenWeather.com](https://openweathermap.org/api). You also need an API key from [OpenNews.org](https://newsapi.org/). 
 
 
 
@@ -49,7 +51,6 @@ android {
 ### Used technologies
 * Hilt
 * Room
-* Material design (wip)
 * GSON
 * OKHTTP
 * Retrofit
