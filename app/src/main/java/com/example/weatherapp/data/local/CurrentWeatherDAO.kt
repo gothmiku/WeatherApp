@@ -22,10 +22,10 @@ interface WeatherInfoDAO{
     @Query("DELETE FROM WeatherInfo")
     fun deleteAllWeatherInfo()
 
-    @Query("SELECT * FROM WeatherInfo")
+    @Query("SELECT * FROM WeatherInfo ORDER BY date ASC")
     fun getAllWeatherInfo(): List<WeatherInfo>
 
-    @Query("SELECT * FROM WeatherInfo")
+    @Query("SELECT * FROM WeatherInfo ORDER BY date ASC")
     fun getAllWeatherInfoFlow(): Flow<List<WeatherInfo>>
 
     @Query("SELECT COUNT(*) FROM WeatherInfo")
