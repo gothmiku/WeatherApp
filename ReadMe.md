@@ -13,7 +13,7 @@ This is one of my projects where I try to learn Kotlin and Android Studio. On th
 * News updates every time the app opens. This is good for consumers but this is not for public. Limited API requests may cause some issues.
 * No refresh button.
 * Location might give you the wrong city. It might be API related
-* Location might not have its text changed. Probable cause might be that the OpenMap API responds too slow before draw.
+* Location might not have its text changed. Probable cause might be the use of wrong dispatchers. 
 * The weather API is not giving accurate data.
 
 ![Cool Animations](https://github.com/gothmiku/WeatherApp/blob/master/animations-demo.gif)
